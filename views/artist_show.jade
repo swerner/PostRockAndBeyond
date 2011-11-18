@@ -1,0 +1,10 @@
+h1= title
+#tracks
+ul
+  - each track in artists
+    li.track
+      h2.artist= track.artist
+      h3.trackname= track.title
+      h4.playedBy= "Played By: "+track.dj
+      span.identifier= new Date(track.timestamp*1000)
+      img.coverart(src=track.coverart)

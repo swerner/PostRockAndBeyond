@@ -1,0 +1,8 @@
+{
+  "name": "prab-bot",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "2.2.0",
+    "ttapi":"1.0.0"
+  }
+}
