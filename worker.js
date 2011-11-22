@@ -20,3 +20,25 @@ bot.on('newsong', function(data){
     });
   });
 });
+
+bot.on('update_votes', function(data){
+  votelog = data.room.metadata;
+  bot.roomInfo(function(data){
+    trackProvider.findByStarttime(data.room.metadata.current_song.starttime, function(error, results){
+        results[0].upvotes = votelog.upvotes
+        results[0].downvotes = votelog.downvotes
+        trackProvider.update(results[0]);
+    });
+   });
+});
+
+bot.on('speak', function(data){
+  text = data.text;
+  user = data.userid;
+  if(user == process.env.TTUID){
+    if(text == "/upvote"){
+      bot.vote('up');
+    }
+
+  }
+});

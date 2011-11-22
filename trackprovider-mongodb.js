@@ -40,13 +40,54 @@ TrackProvider.prototype.findByArtist = function(artistName, callback){
   });
 };
 
+TrackProvider.prototype.findCurrentSong = function(callback){
+  this.getCollection(function(error, track_collection){
+    if(error){
+      callback(error);
+    }else{
+      track_collection.find().sort({"timestamp":-1}).limit(1).toArray(function(error, results){
+        if(error){
+          callback(error);
+        }else{
+          callback(null, results);
+        }
+      });; 
+    }
+  });
+};
+TrackProvider.prototype.findByStarttime = function(time, callback){
+  this.getCollection(function(error, track_collection){
+    if(error){
+      callback(error);
+    }else{
+      track_collection.find({timestamp: time}).toArray(function(error, results){
+        if(error){
+          callback(error);
+        }else{
+          callback(null, results);
+        }
+      });
+    }
+  });
+};
+
+TrackProvider.prototype.update = function(track, callback){
+  this.getCollection(function(error, track_collection){
+    if(error){
+      callback(error);
+    }else{
+      track_collection.update({"timestamp": track.timestamp}, track);
+    }
+    
+  });
+
+};
+
 TrackProvider.prototype.save = function(track, callback){
   this.getCollection(function(error, track_collection){
     if(error){
       callback(error);
     }else{
-      console.log(track);
-      console.log(track_collection);
         track_collection.insert(track, function(err, docs){
         });
       }

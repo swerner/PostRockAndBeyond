@@ -1,11 +1,17 @@
 h1= title
 #tracks
+div.current
+  span.current= current.artist;
+  span.currentTrack= current.title;
+
 ul
   - each track in tracks
     li.track
       h2.artist= track.artist
       h3.trackname= track.title
+      span.upvotes= "Upvotes: "+(track.upvotes || 0)
+      br
+      span.downvotes= "Downvotes:"+(track.downvotes||0)
       h4.playedBy= "Played By: "+track.dj
       span.identifier= new Date(track.timestamp*1000)
       img.coverart(src=track.coverart)
-      
