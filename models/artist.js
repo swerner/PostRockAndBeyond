@@ -8,7 +8,7 @@ var Artist = new Schema({
   plays: Number,
   upvotes: Number,
   downvotes: Number,
-  tracks: [Track]
+  tracks: [{type: Schema.ObjectId, ref :'Track'}]
 });
 
 Artist.statics.find_or_create_by_name = function(name, song, instance, cb){
@@ -18,6 +18,7 @@ Artist.statics.find_or_create_by_name = function(name, song, instance, cb){
       cb(err, docs);
     }else{
       instance.name = name;
+      instance.plays = 0;
       instance.save(function(err){
         elem.findOne({name: name}, function(err, docs){
           cb(err, docs);

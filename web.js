@@ -10,7 +10,7 @@ var ROOM= process.env.PRABBROOM;
 
 var bot = new Bot(AUTH, USERID, ROOM);
 
-mongoose.connect("mongodb://localhost/postrock");
+mongoose.connect("mongodb://localhost/prab");
 
 
 var Dj = mongoose.model("Dj", require("./models/dj").Dj);
@@ -24,16 +24,33 @@ bot.on('newsong', function(data){
 
   bot.getProfile(dj, function(data){
     Dj.find_or_create_by_userid(dj,data.name,new Dj(), function(err, docs){
+      if(err){
+        console.log("ERROR ON DJ FIND: ", err);
+      }
       var dj = docs;
       Artist.find_or_create_by_name(song.metadata.artist, song, new Artist(), function(err, docs){
+        if(err){
+          console.log("ERROR ON ARTIST FIND: ", err);
+        }
         var artist = docs;
-        Track.find_or_create_by_name(song.metadata.song, song, new Track(), function(err, docs){
+        Track.find_or_create_by_name(song.metadata.song, song.metadata.album, artist.id, new Track(), function(err, docs){
+          if(err){
+            console.log("ERROR: ", err);
+          }
           var track = docs;
+          artist.tracks.push(track.id);
+          if(artist.plays >= 0){
+            artist.plays++;
+          }else{
+            artist.plays = 0;
+          }
+          artist.save(function(err){if(err){console.log("ERROR ON ARTIST SAVE", err);}});
           instance = new Play();
           instance.timestamp = song.starttime;
-          instance.dj.push(dj);
-          instance.artist.push(artist);
-          instance.save(function(err){console.log(err);});
+          instance.dj = dj.id;
+          instance.artist = artist.id;
+          instance.track = track.id;
+          instance.save(function(err){if(err){console.log("ERROR ON INSTANCE SAVE", err);}});
         });
       });
     });
@@ -51,19 +68,26 @@ app.configure(function(){
 });
 
 app.get('/', function(request, response){
-  setCurrentSong();
-  trackProvider.findAll(function(error, tracks){
-    console.log("CURRENT");
-    console.log(currentSong);
-    response.render('index.jade', { locals: {
-      title: "Post Rock And Beyond",
-      tracks:tracks.reverse(),
-      current: currentSong
-    }
-  });
+  bot.roomInfo(function(data){
+    dj_data = data.room.metadata.djs;
+    current_song = data.room.metadata.current_song.metadata;
+    Dj.find({userid: {$in: dj_data}}, function(err, docs){
+      djs= docs;
+      Play.find().sort('timestamp',-1).populate('dj').populate('artist').populate('track').limit(10).run(function(err, docs){
+        console.log("ERROR: ", err);
+        console.log("DOCS: ", docs);
+      });
+      response.render("index.jade", {
+        locals: {
+          title: "Post Rock And Beyond",
+          currentTrack: current_song,
+          djs: djs
+        }});
+    });
   });
 });
 
+/*
 app.get('/artists/:name', function(request, response){
   setCurrentSong();
   trackProvider.findByArtist(request.params.name, function(error, tracks){
@@ -74,12 +98,14 @@ app.get('/artists/:name', function(request, response){
     });
   });
 });
+*/
 var port = process.env.PORT || 3000;
 app.listen(port, function(){
   console.log("Listening on " + port);
 });
 
 function setCurrentSong(){
+
   trackProvider.findCurrentSong(function(error, results){
     currentSong = results[0];
   });
