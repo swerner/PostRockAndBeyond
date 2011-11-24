@@ -110,7 +110,7 @@ app.get('/artists/:name', function(request, response){
   });
 });
 */
-var port = process.env.PRBPORT || 3000;
+var port = process.env.PBPORT || 3000;
 app.listen(port, function(){
   console.log("Listening on " + port);
 });
