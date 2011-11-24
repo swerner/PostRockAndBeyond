@@ -9,6 +9,7 @@ var Play = new Schema({
   timestamp: Number,
   upvotes: Number,
   downvotes: Number,
+  listeners: Number,
   dj: {type: Schema.ObjectId, ref: 'Dj'},
   artist: {type: Schema.ObjectId, ref: 'Artist'},
   track: {type: Schema.ObjectId, ref: 'Track'}

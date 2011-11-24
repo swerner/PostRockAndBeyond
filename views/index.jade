@@ -15,4 +15,21 @@ div#header
     each dj, i in djs
       span.djs= (i+1)+"."+dj.name
       br
-
+div#latest_tracks
+  h1= "Last 10 tracks played"
+  table
+    th= "Artist"
+    th= "Song Title"
+    th= "Dj"
+    th= "Awesomes"
+    th= "Lames"
+    th= "Percentage"
+    each song, i in songs
+      tr
+        td= song.artist.name
+        td= song.track.name
+        td= song.dj.name
+        td= song.upvotes||0
+        td= song.downvotes||0
+        td= ((song.upvotes/song.listeners)*100)+"%"
+      

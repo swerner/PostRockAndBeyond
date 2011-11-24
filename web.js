@@ -57,6 +57,16 @@ bot.on('newsong', function(data){
   });
 });
 
+bot.on('update_votes', function(data){
+  Play.find().limit(1).sort('timestamp', -1).run(function(err, docs){
+    play = docs[0];
+    play.upvotes= data.room.metadata.upvotes;
+    play.downvotes= data.room.metadata.downvotes;
+    play.listeners= data.room.metadata.listeners;
+    play.save(function(err){if(err){console.log("Error saving votes: ",err );}});
+  });
+});
+
 app.configure(function(){
   app.set('views', __dirname+'/views');
   app.set('view engine', 'jade');
