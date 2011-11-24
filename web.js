@@ -74,15 +74,16 @@ app.get('/', function(request, response){
     Dj.find({userid: {$in: dj_data}}, function(err, docs){
       djs= docs;
       Play.find().sort('timestamp',-1).populate('dj').populate('artist').populate('track').limit(10).run(function(err, docs){
-        console.log("ERROR: ", err);
-        console.log("DOCS: ", docs);
-      });
+        songs = docs;
       response.render("index.jade", {
         locals: {
           title: "Post Rock And Beyond",
           currentTrack: current_song,
-          djs: djs
+          djs: djs,
+          songs: songs
         }});
+
+      });
     });
   });
 });
@@ -99,14 +100,8 @@ app.get('/artists/:name', function(request, response){
   });
 });
 */
-var port = process.env.PORT || 3000;
+var port = process.env.PRBPORT || 3000;
 app.listen(port, function(){
   console.log("Listening on " + port);
 });
 
-function setCurrentSong(){
-
-  trackProvider.findCurrentSong(function(error, results){
-    currentSong = results[0];
-  });
-}
