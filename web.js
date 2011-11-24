@@ -18,6 +18,8 @@ var Track = mongoose.model("Track", require("./models/track").Track);
 var Artist = mongoose.model("Artist", require("./models/artist").Artist);
 var Play = mongoose.model("Play", require("./models/play").Play);
 
+var currentSong;
+
 bot.on('newsong', function(data){
   song = data.room.metadata.current_song;
   dj = data.room.metadata.current_dj;
@@ -39,18 +41,24 @@ bot.on('newsong', function(data){
           }
           var track = docs;
           artist.tracks.push(track.id);
-          if(artist.plays >= 0){
-            artist.plays++;
-          }else{
-            artist.plays = 0;
-          }
           artist.save(function(err){if(err){console.log("ERROR ON ARTIST SAVE", err);}});
           instance = new Play();
           instance.timestamp = song.starttime;
           instance.dj = dj.id;
           instance.artist = artist.id;
           instance.track = track.id;
-          instance.save(function(err){if(err){console.log("ERROR ON INSTANCE SAVE", err);}});
+          instance.save(function(err){
+            if(err){
+              console.log("ERROR ON INSTANCE SAVE", err);
+            }else{
+              Play.find({timestamp: song.starttime}).populate('dj').populate('artist').populate('track').run(function(err, docs){
+                if(err){
+                  console.log("Error on finding current track");
+                }
+                currentSong = docs[0];
+              });
+            }
+          });
         });
       });
     });
@@ -58,13 +66,23 @@ bot.on('newsong', function(data){
 });
 
 bot.on('update_votes', function(data){
-  Play.find().limit(1).sort('timestamp', -1).run(function(err, docs){
-    play = docs[0];
-    play.upvotes= data.room.metadata.upvotes;
-    play.downvotes= data.room.metadata.downvotes;
-    play.listeners= data.room.metadata.listeners;
-    play.save(function(err){if(err){console.log("Error saving votes: ",err );}});
-  });
+  currentSong.upvotes= data.room.metadata.upvotes;
+  currentSong.downvotes= data.room.metadata.downvotes;
+  currentSong.listeners= data.room.metadata.listeners;
+});
+
+bot.on('end_song', function(){
+  currentSong.dj.plays++;
+  currentSong.dj.upvotes+=currentSong.upvotes;
+  currentSong.dj.downvotes+=currentSong.downvotes;
+
+  currentSong.artist.plays++;
+  currentSong.artist.upvotes+=currentSong.upvotes;
+  currentSong.artist.downvotes+=currentSong.downvotes;
+
+  currentSong.track.plays++;
+  currentSong.track.upvotes+=currentSong.upvotes;
+  currentSong.track.downvotes+=currentSong.downvotes;
 });
 
 app.configure(function(){
@@ -80,7 +98,7 @@ app.configure(function(){
 app.get('/', function(request, response){
   bot.roomInfo(function(data){
     dj_data = data.room.metadata.djs;
-    current_song = data.room.metadata.current_song.metadata;
+    current_song = data.room.metadata.current_song;
     Dj.find({userid: {$in: dj_data}}, function(err, docs){
       djs= docs;
       Play.find().sort('timestamp',-1).populate('dj').populate('artist').populate('track').limit(10).run(function(err, docs){
@@ -98,18 +116,29 @@ app.get('/', function(request, response){
   });
 });
 
-/*
+
 app.get('/artists/:name', function(request, response){
-  setCurrentSong();
-  trackProvider.findByArtist(request.params.name, function(error, tracks){
+  Artist.find({name: request.params.name}).populate('tracks').run(function(error, artist){
+    console.log(artist[0]);
     response.render("artist_show.jade", { locals: {
       title: "Post Rock And Beyond",
-      artists: tracks
+      artist: artist[0],
     }
     });
   });
 });
-*/
+
+app.get('/djs/:name', function(request, response){
+  Dj.find({name: request.params.name}, function(error, dj){
+    console.log(dj);
+    response.render("dj_show.jade", { locals: {
+      title: "Post Rock And Beyond",
+      dj: dj[0]
+    }
+    })
+  });
+});
+
 var port = process.env.PBPORT || 3000;
 app.listen(port, function(){
   console.log("Listening on " + port);

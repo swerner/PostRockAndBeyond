@@ -19,6 +19,8 @@ Artist.statics.find_or_create_by_name = function(name, song, instance, cb){
     }else{
       instance.name = name;
       instance.plays = 0;
+      instance.upvotes= 0;
+      instance.downvotes= 0;
       instance.save(function(err){
         elem.findOne({name: name}, function(err, docs){
           cb(err, docs);

@@ -1,10 +1,11 @@
 h1= title
+
+h2= artist.name
+span.plays= "Plays: "+artist.plays
 #tracks
 ul
-  - each track in artists
+  each track in artist.tracks
     li.track
-      h2.artist= track.artist
-      h3.trackname= track.title
-      h4.playedBy= "Played By: "+track.dj
-      span.identifier= new Date(track.timestamp*1000)
-      img.coverart(src=track.coverart)
+      h3.albumname= "Album: "+track.album
+      h3.trackname= "Track: "+track.name
+      

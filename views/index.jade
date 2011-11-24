@@ -1,20 +1,26 @@
 div#header
   h1= title
   div#current
-    h2= "Currently Playing"
-    span.currentLabel= "Artist: "
-    span.currentArtist= currentTrack.artist
-    br
-    span.currentLabel= "Album: "
-    span.currentAlbum= currentTrack.album
-    br
-    span.currentLabel= "Track: "
-    span.currentTrack= currentTrack.song
-  div#djs
-    h2= "Currently Djing"
-    each dj, i in djs
-      span.djs= (i+1)+"."+dj.name
+    - if(!currentTrack)
+      h2= "Nothing Currently Playing"
+    - else
+      h2= "Currently Playing"
+      span.currentLabel= "Artist: "
+      span.currentArtist= currentTrack.artist
       br
+      span.currentLabel= "Album: "
+      span.currentAlbum= currentTrack.album
+      br
+      span.currentLabel= "Track: "
+      span.currentTrack= currentTrack.song
+  div#djs
+    - if(djs.length == 0)
+      h2= "No one currently DJing"
+    - else
+      h2= "Currently Djing"
+      each dj, i in djs
+        span.djs= (i+1)+"."+dj.name
+        br
 div#latest_tracks
   h1= "Last 10 tracks played"
   table
