@@ -7,6 +7,7 @@ var app = express.createServer(express.logger());
 var AUTH = process.env.PRABBAUTH;
 var USERID= process.env.PRABBUSERID;
 var ROOM= process.env.PRABBROOM;
+var gacode = process.end.GACODE;
 
 var bot = new Bot(AUTH, USERID, ROOM);
 
@@ -96,7 +97,7 @@ app.configure(function(){
   app.use(express.static(__dirname +'/public'));
 });
 app.set('view options', {
-  gacode: process.env.GACODE
+  gacode: gacode
 });
 
 app.get('/', function(request, response){
