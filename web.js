@@ -83,6 +83,7 @@ bot.on('end_song', function(){
   currentSong.track.plays++;
   currentSong.track.upvotes+=currentSong.upvotes;
   currentSong.track.downvotes+=currentSong.downvotes;
+  currentSong.save(function(err){if(err){console.log(err);}});
 });
 
 app.configure(function(){
