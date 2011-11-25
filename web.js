@@ -64,9 +64,6 @@ bot.on('newsong', function(data){
     });
   });
 });
-bot.on('tcpConnect', function(data){
-  console.log(data);
-});
 
 bot.on('update_votes', function(data){
   currentSong.upvotes= data.room.metadata.upvotes;
