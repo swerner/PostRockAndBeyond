@@ -17,7 +17,7 @@ var Play = new Schema({
 
 Play.statics.find_or_create_by_timestamp = function(timestamp, dj, artist, track, instance, cb){
   elem = this;
-  elem.find({timestamp:timestamp}).populate('dj').populate('artist').populate('track').run(function(err, docs){
+  elem.findOne({timestamp:timestamp}).populate('dj').populate('artist').populate('track').run(function(err, docs){
     if(docs){
       cb(err, docs);
     }else{
@@ -26,8 +26,8 @@ Play.statics.find_or_create_by_timestamp = function(timestamp, dj, artist, track
       instance.artist = artist;
       instance.track = track;
       instance.save(function(err){
-        elem.find({timestamp:timestamp}).populate('dj').populate('artist').populate('track').run(function(err, docs){
-          cb(err, docs[0]);
+        elem.findOne({timestamp:timestamp}).populate('dj').populate('artist').populate('track').run(function(err, docs){
+          cb(err, docs);
         });
       });
     }
