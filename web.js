@@ -85,7 +85,13 @@ bot.on('end_song', function(){
   currentSong.track.downvotes+=currentSong.downvotes;
   currentSong.save(function(err){if(err){console.log(err);}});
 });
-
+bot.on('add_dj', function(data){
+  Dj.find_or_create_by_userid(data.user[0].userid, data.user[0].name, new Dj(), function(err, docs){
+    if(err){
+      console.log("Error when adding dj: ", err);
+    }
+  });
+});
 app.configure(function(){
   app.set('views', __dirname+'/views');
   app.set('view engine', 'jade');
@@ -100,6 +106,11 @@ app.get('/', function(request, response){
   bot.roomInfo(function(data){
     dj_data = data.room.metadata.djs;
     current_song = data.room.metadata.current_song;
+    console.log("Current Song: ", current_song);
+    if(current_song){
+      console.log("In here");
+      current_song = current_song.metadata;
+    }
     Dj.find({userid: {$in: dj_data}}, function(err, docs){
       djs= docs;
       Play.find().sort('timestamp',-1).populate('dj').populate('artist').populate('track').limit(10).run(function(err, docs){
