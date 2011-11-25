@@ -26,38 +26,27 @@ bot.on('newsong', function(data){
 
   bot.getProfile(dj, function(data){
     Dj.find_or_create_by_userid(dj,data.name,new Dj(), function(err, docs){
-      if(err){
-        console.log("ERROR ON DJ FIND: ", err);
-      }
+      log_error(err);
       var dj = docs;
       Artist.find_or_create_by_name(song.metadata.artist, song, new Artist(), function(err, docs){
-        if(err){
-          console.log("ERROR ON ARTIST FIND: ", err);
-        }
+        log_error(err);
         var artist = docs;
         Track.find_or_create_by_name(song.metadata.song, song.metadata.album, artist.id, new Track(), function(err, docs){
-          if(err){
-            console.log("ERROR: ", err);
-          }
+          log_error(err);
           var track = docs;
           artist.tracks.push(track.id);
-          artist.save(function(err){if(err){console.log("ERROR ON ARTIST SAVE", err);}});
+          artist.save(function(err){log_error(err);});
           instance = new Play();
           instance.timestamp = song.starttime;
           instance.dj = dj.id;
           instance.artist = artist.id;
           instance.track = track.id;
           instance.save(function(err){
-            if(err){
-              console.log("ERROR ON INSTANCE SAVE", err);
-            }else{
+            log_error(err);
               Play.find({timestamp: song.starttime}).populate('dj').populate('artist').populate('track').run(function(err, docs){
-                if(err){
-                  console.log("Error on finding current track");
-                }
+                log_error(err);
                 currentSong = docs[0];
-              });
-            }
+            });
           });
         });
       });
@@ -69,7 +58,7 @@ bot.on('update_votes', function(data){
   currentSong.upvotes= data.room.metadata.upvotes;
   currentSong.downvotes= data.room.metadata.downvotes;
   currentSong.listeners= data.room.metadata.listeners;
-  currentSong.save(function(err){if(err){console.log("Error at update_votes: ", err);}});
+  currentSong.save(function(err){log_error(err);});
 });
 
 bot.on('end_song', function(){
@@ -77,26 +66,24 @@ bot.on('end_song', function(){
   currentSong.dj.upvotes+=currentSong.upvotes;
   currentSong.dj.downvotes+=currentSong.downvotes;
   dj = currentSong.dj;
-  dj.save(function(err){if(err){console.log(err);}});
+  dj.save(function(err){log_error(err);});
 
   currentSong.artist.plays++;
   currentSong.artist.upvotes+=currentSong.upvotes;
   currentSong.artist.downvotes+=currentSong.downvotes;
   artist = currentSong.artist;
-  artist.save(function(err){if(err){console.log(err);}});
+  artist.save(function(err){log_error(err);});
 
   currentSong.track.plays++;
   currentSong.track.upvotes+=currentSong.upvotes;
   currentSong.track.downvotes+=currentSong.downvotes;
   track = currentSong.track;
-  track.save(function(err){if(err){console.log(err);}});
-  currentSong.save(function(err){if(err){console.log(err);}});
+  track.save(function(err){log_error(err);});
+  currentSong.save(function(err){log_error(err);});
 });
 bot.on('add_dj', function(data){
   Dj.find_or_create_by_userid(data.user[0].userid, data.user[0].name, new Dj(), function(err, docs){
-    if(err){
-      console.log("Error when adding dj: ", err);
-    }
+        log_error(err);
   });
 });
 app.configure(function(){
@@ -117,11 +104,13 @@ app.get('/', function(request, response){
       current_song = current_song.metadata;
     }
     Dj.find({userid: {$in: dj_data}}, function(err, docs){
+        log_error(err);
       djs= docs;
       Play.find().sort('timestamp',-1).populate('dj').populate('artist').populate('track').limit(10).run(function(err, docs){
+        log_error(err);
         songs = docs;
         Artist.find().sort('plays', -1).limit(10).run(function(err, docs){
-          if(err){console.log(err);}
+          log_error(err);
           topPlays = docs;
           Artist.find().sort('upvotes', -1).limit(10).run(function(err, docs){
             topUpvotes = docs;
@@ -147,7 +136,7 @@ app.get('/', function(request, response){
 
 app.get('/artists/:name', function(request, response){
   Artist.find({name: request.params.name}).populate('tracks').run(function(error, artist){
-    console.log(artist[0]);
+    log_error(error);
     response.render("artist_show.jade", { locals: {
       title: "Post Rock And Beyond",
       artist: artist[0],
@@ -158,7 +147,7 @@ app.get('/artists/:name', function(request, response){
 
 app.get('/djs/:name', function(request, response){
   Dj.find({name: request.params.name}, function(error, dj){
-    console.log(dj);
+    log_error(error)
     response.render("dj_show.jade", { locals: {
       title: "Post Rock And Beyond",
       dj: dj[0]
@@ -172,3 +161,8 @@ app.listen(port, function(){
   console.log("Listening on " + port);
 });
 
+log_error = function(err){
+  if(err){
+    console.log(err);
+  }
+};
