@@ -7,7 +7,7 @@ var app = express.createServer(express.logger());
 var AUTH = process.env.PRABBAUTH;
 var USERID= process.env.PRABBUSERID;
 var ROOM= process.env.PRABBROOM;
-var gacode = process.end.GACODE;
+var gacode = process.env.GACODE || "";
 
 var bot = new Bot(AUTH, USERID, ROOM);
 
