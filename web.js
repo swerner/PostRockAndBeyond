@@ -95,6 +95,9 @@ app.configure(function(){
   app.use(app.router);
   app.use(express.static(__dirname +'/public'));
 });
+app.set('view options', {
+  gacode: process.env.GACODE
+});
 
 app.get('/', function(request, response){
   bot.roomInfo(function(data){
