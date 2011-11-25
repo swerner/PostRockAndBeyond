@@ -7,7 +7,6 @@ var app = express.createServer(express.logger());
 var AUTH = process.env.PRABBAUTH;
 var USERID= process.env.PRABBUSERID;
 var ROOM= process.env.PRABBROOM;
-var gacode = process.env.GACODE || "";
 
 var bot = new Bot(AUTH, USERID, ROOM);
 
@@ -82,9 +81,6 @@ app.configure(function(){
   app.use(require('stylus').middleware({src: __dirname + '/public' }));
   app.use(app.router);
   app.use(express.static(__dirname +'/public'));
-});
-app.set('view options', {
-  gacode: gacode
 });
 
 app.get('/', function(request, response){
