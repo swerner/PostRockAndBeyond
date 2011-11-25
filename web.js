@@ -64,11 +64,15 @@ bot.on('newsong', function(data){
     });
   });
 });
+bot.on('tcpConnect', function(data){
+  console.log(data);
+});
 
 bot.on('update_votes', function(data){
   currentSong.upvotes= data.room.metadata.upvotes;
   currentSong.downvotes= data.room.metadata.downvotes;
   currentSong.listeners= data.room.metadata.listeners;
+  currentSong.save(function(err){if(err){console.log("Error at update_votes: ", err);}});
 });
 
 bot.on('end_song', function(){
@@ -106,9 +110,7 @@ app.get('/', function(request, response){
   bot.roomInfo(function(data){
     dj_data = data.room.metadata.djs;
     current_song = data.room.metadata.current_song;
-    console.log("Current Song: ", current_song);
     if(current_song){
-      console.log("In here");
       current_song = current_song.metadata;
     }
     Dj.find({userid: {$in: dj_data}}, function(err, docs){
