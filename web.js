@@ -68,9 +68,8 @@ bot.on('update_votes', function(data){
 });
 
 bot.on('endsong', function(){
-  if(currentSong){
+  console.log("End Song");
     updatePlayInfo();
-  }
 });
 bot.on('add_dj', function(data){
   Dj.find_or_create_by_userid(data.user[0].userid, data.user[0].name, new Dj(), function(err, docs){
