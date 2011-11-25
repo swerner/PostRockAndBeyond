@@ -76,14 +76,20 @@ bot.on('end_song', function(){
   currentSong.dj.plays++;
   currentSong.dj.upvotes+=currentSong.upvotes;
   currentSong.dj.downvotes+=currentSong.downvotes;
+  dj = currentSong.dj;
+  dj.save(function(err){if(err){console.log(err);}});
 
   currentSong.artist.plays++;
   currentSong.artist.upvotes+=currentSong.upvotes;
   currentSong.artist.downvotes+=currentSong.downvotes;
+  artist = currentSong.artist;
+  artist.save(function(err){if(err){console.log(err);}});
 
   currentSong.track.plays++;
   currentSong.track.upvotes+=currentSong.upvotes;
   currentSong.track.downvotes+=currentSong.downvotes;
+  track = currentSong.track;
+  track.save(function(err){if(err){console.log(err);}});
   currentSong.save(function(err){if(err){console.log(err);}});
 });
 bot.on('add_dj', function(data){
