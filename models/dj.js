@@ -5,9 +5,9 @@ var ObjectId = Schema.ObjectId;
 var Dj = new Schema({
   name: String,
   userid: String,
-  plays: Number,
-  upvotes: Number,
-  downvotes: Number
+  plays: {type:Number, default: 0},
+  upvotes: {type: Number, default: 0},
+  downvotes: {type: Number, default: 0}
 });
 
 Dj.statics.find_or_create_by_userid = function(dj,name,instance, cb){

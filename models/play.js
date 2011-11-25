@@ -7,9 +7,9 @@ var Track = mongoose.model("Track");
 
 var Play = new Schema({
   timestamp: Number,
-  upvotes: Number,
-  downvotes: Number,
-  listeners: Number,
+  upvotes: {type: Number, default: 0},
+  downvotes: {type: Number, default: 0},
+  listeners: {type: Number, default: 0},
   dj: {type: Schema.ObjectId, ref: 'Dj'},
   artist: {type: Schema.ObjectId, ref: 'Artist'},
   track: {type: Schema.ObjectId, ref: 'Track'}

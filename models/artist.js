@@ -5,9 +5,9 @@ var Track = mongoose.model("Track");
 
 var Artist = new Schema({
   name: String,
-  plays: Number,
-  upvotes: Number,
-  downvotes: Number,
+  plays: {type:Number, default: 0},
+  upvotes: {type: Number, default: 0},
+  downvotes: {type: Number, default: 0},
   tracks: [{type: Schema.ObjectId, ref :'Track'}]
 });
 
@@ -18,9 +18,6 @@ Artist.statics.find_or_create_by_name = function(name, song, instance, cb){
       cb(err, docs);
     }else{
       instance.name = name;
-      instance.plays = 0;
-      instance.upvotes= 0;
-      instance.downvotes= 0;
       instance.save(function(err){
         elem.findOne({name: name}, function(err, docs){
           cb(err, docs);

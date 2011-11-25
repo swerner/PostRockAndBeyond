@@ -5,9 +5,9 @@ var ObjectId = Schema.ObjectId;
 var Track = new Schema({
   name: String,
   album: String,
-  plays: Number,
-  upvotes: Number,
-  downvotes: Number,
+  plays: {type:Number, default: 0},
+  upvotes: {type:Number, default: 0},
+  downvotes: {type:Number, default: 0},
   artist: {type: Schema.ObjectId, ref:'Artist'}
 });
 
