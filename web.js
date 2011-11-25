@@ -31,6 +31,9 @@ bot.on('ready', function(data){
 setCurrentSong = function(data){
   song = data.room.metadata.current_song;
   dj = data.room.metadata.current_dj;
+  upvotes = data.room.metadata.upvotes;
+  downvotes = data.room.metadata.downvotes;
+  listeners = data.room.metadata.listeners;
 
   bot.getProfile(dj, function(data){
     Dj.find_or_create_by_userid(dj,data.name,new Dj(), function(err, docs){
@@ -46,6 +49,9 @@ setCurrentSong = function(data){
           artist.save(function(err){log_error(err);});
           Play.find_or_create_by_timestamp(song.starttime, dj.id, artist.id, track.id, new Play(), function(err, docs){
             currentSong = docs;
+            currentSong.upvotes = upvotes;
+            currentSong.downvotes = downvotes;
+            currentSong.listeners = listeners;
           });
         });
       });
