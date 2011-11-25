@@ -38,4 +38,14 @@ div#latest_tracks
         td= song.upvotes||0
         td= song.downvotes||0
         td= ((song.upvotes/song.listeners)*100)+"%"
-      
+div#topArtists
+  h1= "Most Played Artists"
+  ol
+    each artist in topPlays
+      li= artist.name+" - Plays: "+artist.plays
+
+div#topUpvotes
+  h1= "Most Upvoted Artists"
+  ol
+    each artist in topUpvotes
+      li= artist.name+" - Upvotes: "+artist.upvotes

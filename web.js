@@ -114,13 +114,24 @@ app.get('/', function(request, response){
       djs= docs;
       Play.find().sort('timestamp',-1).populate('dj').populate('artist').populate('track').limit(10).run(function(err, docs){
         songs = docs;
-      response.render("index.jade", {
-        locals: {
-          title: "Post Rock And Beyond",
-          currentTrack: current_song,
-          djs: djs,
-          songs: songs
-        }});
+        Artist.find().sort('plays', -1).limit(10).run(function(err, docs){
+          if(err){console.log(err);}
+          topPlays = docs;
+          Artist.find().sort('upvotes', -1).limit(10).run(function(err, docs){
+            topUpvotes = docs;
+            response.render("index.jade", {
+              locals: {
+                title: "Post Rock And Beyond",
+                currentTrack: current_song,
+                djs: djs,
+                songs: songs,
+                topPlays: topPlays,
+                topUpvotes: topUpvotes
+              }});
+          
+          });
+        
+        });
 
       });
     });
