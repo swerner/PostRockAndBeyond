@@ -56,31 +56,18 @@ bot.on('newsong', function(data){
 });
 
 bot.on('update_votes', function(data){
-  currentSong.upvotes= data.room.metadata.upvotes;
-  currentSong.downvotes= data.room.metadata.downvotes;
-  currentSong.listeners= data.room.metadata.listeners;
-  currentSong.save(function(err){log_error(err);});
+  if(currentSong){
+    currentSong.upvotes= data.room.metadata.upvotes;
+    currentSong.downvotes= data.room.metadata.downvotes;
+    currentSong.listeners= data.room.metadata.listeners;
+    currentSong.save(function(err){log_error(err);});
+  }
 });
 
-bot.on('end_song', function(){
-  currentSong.dj.plays++;
-  currentSong.dj.upvotes = currentSong.dj.upvotes ? currentSong.dj.upvotes+currentSong.upvotes : currentSong.upvotes;
-  currentSong.dj.downvotes = currentSong.dj.downvotes ? currentSong.dj.downvotes+currentSong.downvotes : currentSong.downvotes;
-  dj = currentSong.dj;
-  dj.save(function(err){log_error(err);});
-
-  currentSong.artist.plays = currentSong.artist.plays ? currentSong.artist.plays+1 : 1;
-  currentSong.artist.upvotes = currentSong.artist.upvotes ? currentSong.artist.upvotes+currentSong.upvotes : currentSong.upvotes;
-  currentSong.artist.downvotes = currentSong.artist.downvotes ? currentSong.artist.downvotes+currentSong.downvotes : currentSong.downvotes;
-  artist = currentSong.artist;
-  artist.save(function(err){log_error(err);});
-
-  currentSong.track.plays = currentSong.track.plays ? currentSong.track.plays+1:1;
-  currentSong.track.upvotes = currentSong.track.upvotes ? currentSong.track.upvotes+currentSong.upvotes : currentSong.upvotes;
-  currentSong.track.downvotes = currentSong.track.downvotes ? currentSong.track.downvotes+currentSong.downvotes : currentSong.downvotes;
-  track = currentSong.track;
-  track.save(function(err){log_error(err);});
-  currentSong.save(function(err){log_error(err);});
+bot.on('endsong', function(){
+  if(currentSong){
+    updatePlayInfo();
+  }
 });
 bot.on('add_dj', function(data){
   Dj.find_or_create_by_userid(data.user[0].userid, data.user[0].name, new Dj(), function(err, docs){
@@ -169,4 +156,25 @@ log_error = function(err){
   if(err){
     console.log(err);
   }
+};
+
+updatePlayInfo = function(){
+  currentSong.dj.plays++;
+  currentSong.dj.upvotes = currentSong.dj.upvotes ? currentSong.dj.upvotes+currentSong.upvotes : currentSong.upvotes;
+  currentSong.dj.downvotes = currentSong.dj.downvotes ? currentSong.dj.downvotes+currentSong.downvotes : currentSong.downvotes;
+  dj = currentSong.dj;
+  dj.save(function(err){log_error(err);});
+
+  currentSong.artist.plays = currentSong.artist.plays ? currentSong.artist.plays+1 : 1;
+  currentSong.artist.upvotes = currentSong.artist.upvotes ? currentSong.artist.upvotes+currentSong.upvotes : currentSong.upvotes;
+  currentSong.artist.downvotes = currentSong.artist.downvotes ? currentSong.artist.downvotes+currentSong.downvotes : currentSong.downvotes;
+  artist = currentSong.artist;
+  artist.save(function(err){log_error(err);});
+
+  currentSong.track.plays = currentSong.track.plays ? currentSong.track.plays+1:1;
+  currentSong.track.upvotes = currentSong.track.upvotes ? currentSong.track.upvotes+currentSong.upvotes : currentSong.upvotes;
+  currentSong.track.downvotes = currentSong.track.downvotes ? currentSong.track.downvotes+currentSong.downvotes : currentSong.downvotes;
+  track = currentSong.track;
+  track.save(function(err){log_error(err);});
+  currentSong.save(function(err){log_error(err);});
 };
