@@ -59,17 +59,14 @@ setCurrentSong = function(data){
   });
 };
 bot.on('update_votes', function(data){
-  if(currentSong){
-    currentSong.upvotes= data.room.metadata.upvotes;
-    currentSong.downvotes= data.room.metadata.downvotes;
-    currentSong.listeners= data.room.metadata.listeners;
-    currentSong.save(function(err){log_error(err);});
-  }
+  currentSong.upvotes= data.room.metadata.upvotes;
+  currentSong.downvotes= data.room.metadata.downvotes;
+  currentSong.listeners= data.room.metadata.listeners;
+  currentSong.save(function(err){log_error(err);});
 });
 
 bot.on('endsong', function(){
-  console.log("End Song");
-    updatePlayInfo();
+  updatePlayInfo();
 });
 bot.on('add_dj', function(data){
   Dj.find_or_create_by_userid(data.user[0].userid, data.user[0].name, new Dj(), function(err, docs){
