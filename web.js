@@ -45,7 +45,7 @@ setCurrentSong = function(data){
           artist.tracks.push(track.id);
           artist.save(function(err){log_error(err);});
           Play.find_or_create_by_timestamp(song.starttime, dj.id, artist.id, track.id, new Play(), function(err, docs){
-            currentSong = docs[0]
+            currentSong = docs;
           });
         });
       });
