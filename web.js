@@ -21,6 +21,14 @@ var Play = mongoose.model("Play", require("./models/play").Play);
 var currentSong;
 
 bot.on('newsong', function(data){
+  setCurrentSong(data);
+});
+bot.on('ready', function(data){
+  bot.roomInfo(function(data){
+    setCurrentSong(data);
+  });
+});
+setCurrentSong = function(data){
   song = data.room.metadata.current_song;
   dj = data.room.metadata.current_dj;
 
@@ -36,24 +44,14 @@ bot.on('newsong', function(data){
           var track = docs;
           artist.tracks.push(track.id);
           artist.save(function(err){log_error(err);});
-          instance = new Play();
-          instance.timestamp = song.starttime;
-          instance.dj = dj.id;
-          instance.artist = artist.id;
-          instance.track = track.id;
-          instance.save(function(err){
-            log_error(err);
-              Play.find({timestamp: song.starttime}).populate('dj').populate('artist').populate('track').run(function(err, docs){
-                log_error(err);
-                currentSong = docs[0];
-            });
+          Play.find_or_create_by_timestamp(song.starttime, dj.id, artist.id, track.id, new Play(), function(err, docs){
+            currentSong = docs[0]
           });
         });
       });
     });
   });
-});
-
+};
 bot.on('update_votes', function(data){
   if(currentSong){
     currentSong.upvotes= data.room.metadata.upvotes;

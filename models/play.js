@@ -15,6 +15,24 @@ var Play = new Schema({
   track: {type: Schema.ObjectId, ref: 'Track'}
 });
 
+Play.statics.find_or_create_by_timestamp = function(timestamp, dj, artist, track, instance, cb){
+  elem = this;
+  elem.findOne({timestamp:timestamp}, function(err, docs){
+    if(docs){
+      cb(err, docs);
+    }else{
+      instance.timestamp = timestamp;
+      instance.dj = dj;
+      instance.artist = artist;
+      instance.track = track;
+      instance.save(function(err){
+        elem.findOne({timestamp:timestamp}, function(err, docs){
+          cb(err, docs);
+        });
+      });
+    }
+  });
+};
 Play.methods.findLatestPlays = function(cb){
   return this.find().sort({"timestamp":-1}).limit(10).toArray(cb);
 };
