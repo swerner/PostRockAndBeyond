@@ -64,20 +64,20 @@ bot.on('update_votes', function(data){
 
 bot.on('end_song', function(){
   currentSong.dj.plays++;
-  currentSong.dj.upvotes+=currentSong.upvotes;
-  currentSong.dj.downvotes+=currentSong.downvotes;
+  currentSong.dj.upvotes = currentSong.dj.upvotes ? currentSong.dj.upvotes+currentSong.upvotes : currentSong.upvotes;
+  currentSong.dj.downvotes = currentSong.dj.downvotes ? currentSong.dj.downvotes+currentSong.downvotes : currentSong.downvotes;
   dj = currentSong.dj;
   dj.save(function(err){log_error(err);});
 
-  currentSong.artist.plays++;
-  currentSong.artist.upvotes+=currentSong.upvotes;
-  currentSong.artist.downvotes+=currentSong.downvotes;
+  currentSong.artist.plays = currentSong.artist.plays ? currentSong.artist.plays+1 : 1;
+  currentSong.artist.upvotes = currentSong.artist.upvotes ? currentSong.artist.upvotes+currentSong.upvotes : currentSong.upvotes;
+  currentSong.artist.downvotes = currentSong.artist.downvotes ? currentSong.artist.downvotes+currentSong.downvotes : currentSong.downvotes;
   artist = currentSong.artist;
   artist.save(function(err){log_error(err);});
 
-  currentSong.track.plays++;
-  currentSong.track.upvotes+=currentSong.upvotes;
-  currentSong.track.downvotes+=currentSong.downvotes;
+  currentSong.track.plays = currentSong.track.plays ? currentSong.track.plays+1:1;
+  currentSong.track.upvotes = currentSong.track.upvotes ? currentSong.track.upvotes+currentSong.upvotes : currentSong.upvotes;
+  currentSong.track.downvotes = currentSong.track.downvotes ? currentSong.track.downvotes+currentSong.downvotes : currentSong.downvotes;
   track = currentSong.track;
   track.save(function(err){log_error(err);});
   currentSong.save(function(err){log_error(err);});
