@@ -30,7 +30,23 @@ body{
   color: #B80;
   border-bottom: 1px dotted #B80;
 }
+#leftBox, #rightBox{
+float: left;
+}
+#leftBox{
+  width: 300px;
+  margin-right: 9px;
+  border-right: 1px solid #ccc;
+  padding: 10px;
+}
 
+#leftBox ol{
+  list-style: none;
+}
+#rightBox{
+  width: 600px;
+  padding: 0 20px;
+}
 #current, #djs{
   margin-top; 20px;
   border: 1px solid #ccc;

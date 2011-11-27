@@ -25,6 +25,48 @@ app.configure(function(){
   app.use(app.router);
   app.use(express.static(__dirname +'/public'));
 });
+app.get('/test', function(req, resp){
+  djs = ['4ecc217b4fe7d03a6c000529','4e4179044fe7d02e6f040501','4e13d951a3f75114d00887eb'];
+  Dj.find({userid: {$in: djs}}, function(err, djs){
+    log_error(err);
+    Play.find().sort('timestamp', -1).populate('dj').populate('artist').populate('track').limit(10).run(function(err, songs){
+      log_error(err);
+      Artist.find().sort('plays', -1).limit(10).run(function(err, topArtists){
+        log_error(err);
+        Artist.find().sort('upvotes', -1).limit(10).run(function(err, upvotedArtists){
+          log_error(err);
+          Track.find().sort('plays', -1).limit(10).run(function(err, topSongs){
+            log_error(err);
+            Track.find().sort('upvotes', -1).limit(10).run(function(err, upvotedSongs){
+              log_error(err);
+              Dj.find().sort('plays', -1).limit(10).run(function(err, topDjs){
+                log_error(err);
+                Dj.find().sort('upvotes', -1).limit(10).run(function(err, upvotedDjs){
+                  log_error(err);
+                  resp.render('index.jade', {
+                    locals: {
+                      title: "Home",
+                      currentTrack: {artist: "Toe", album: "For Long Tomorrow", song: "Goodbye"},
+                      djs: djs,
+                      songs: songs,
+                      topArtists: topArtists,
+                      upvotedArtists: upvotedArtists,
+                      topSongs: topSongs,
+                      upvotedSongs: upvotedSongs,
+                      topDjs: topDjs,
+                      upvotedDjs: upvotedDjs
+                    }
+                  });
+                });
+              });
+            });
+          });
+        });
+      });
+    });
+  });
+
+});
 
 app.get('/', function(request, response){
   bot.roomInfo(function(data){
@@ -33,16 +75,13 @@ app.get('/', function(request, response){
     if(current_song){
       current_song = current_song.metadata;
     }
-    Dj.find({userid: {$in: dj_data}}, function(err, docs){
+    Dj.find({userid: {$in: dj_data}}, function(err, djs){
+      log_error(err);
+      Play.find().sort('timestamp',-1).populate('dj').populate('artist').populate('track').limit(10).run(function(err, songs){
         log_error(err);
-      djs= docs;
-      Play.find().sort('timestamp',-1).populate('dj').populate('artist').populate('track').limit(10).run(function(err, docs){
-        log_error(err);
-        songs = docs;
-        Artist.find().sort('plays', -1).limit(10).run(function(err, docs){
+        Artist.find().sort('plays', -1).limit(10).run(function(err, topPlays){
           log_error(err);
-          topPlays = docs;
-          Artist.find().sort('upvotes', -1).limit(10).run(function(err, docs){
+          Artist.find().sort('upvotes', -1).limit(10).run(function(err, topUpvotes){
             topUpvotes = docs;
             response.render("index.jade", {
               locals: {
@@ -53,9 +92,9 @@ app.get('/', function(request, response){
                 topPlays: topPlays,
                 topUpvotes: topUpvotes
               }});
-          
+
           });
-        
+
         });
 
       });
