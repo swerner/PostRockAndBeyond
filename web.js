@@ -75,31 +75,45 @@ app.get('/', function(request, response){
     if(current_song){
       current_song = current_song.metadata;
     }
-    Dj.find({userid: {$in: dj_data}}, function(err, djs){
+  Dj.find({userid: {$in: dj_data}}, function(err, djs){
+    log_error(err);
+    Play.find().sort('timestamp', -1).populate('dj').populate('artist').populate('track').limit(10).run(function(err, songs){
       log_error(err);
-      Play.find().sort('timestamp',-1).populate('dj').populate('artist').populate('track').limit(10).run(function(err, songs){
+      Artist.find().sort('plays', -1).limit(10).run(function(err, topArtists){
         log_error(err);
-        Artist.find().sort('plays', -1).limit(10).run(function(err, topPlays){
+        Artist.find().sort('upvotes', -1).limit(10).run(function(err, upvotedArtists){
           log_error(err);
-          Artist.find().sort('upvotes', -1).limit(10).run(function(err, topUpvotes){
-            topUpvotes = docs;
-            response.render("index.jade", {
-              locals: {
-                title: "Post Rock And Beyond",
-                currentTrack: current_song,
-                djs: djs,
-                songs: songs,
-                topPlays: topPlays,
-                topUpvotes: topUpvotes
-              }});
-
+          Track.find().sort('plays', -1).limit(10).run(function(err, topSongs){
+            log_error(err);
+            Track.find().sort('upvotes', -1).limit(10).run(function(err, upvotedSongs){
+              log_error(err);
+              Dj.find().sort('plays', -1).limit(10).run(function(err, topDjs){
+                log_error(err);
+                Dj.find().sort('upvotes', -1).limit(10).run(function(err, upvotedDjs){
+                  log_error(err);
+                  response.render('index.jade', {
+                    locals: {
+                      title: "Home",
+                      currentTrack: current_song,
+                      djs: djs,
+                      songs: songs,
+                      topArtists: topArtists,
+                      upvotedArtists: upvotedArtists,
+                      topSongs: topSongs,
+                      upvotedSongs: upvotedSongs,
+                      topDjs: topDjs,
+                      upvotedDjs: upvotedDjs
+                    }
+                  });
+                });
+              });
+            });
           });
-
         });
-
       });
     });
   });
+});
 });
 
 
