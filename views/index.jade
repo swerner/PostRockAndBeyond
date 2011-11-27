@@ -1,26 +1,35 @@
-div#header
-  h1= title
-  div#current
-    - if(!currentTrack)
-      h2= "Nothing Currently Playing"
-    - else
-      h2= "Currently Playing"
-      span.currentLabel= "Artist: "
-      span.currentArtist= currentTrack.artist
+div#current
+  - if(!currentTrack)
+    h2= "Nothing Currently Playing"
+  - else
+    h2= "Currently Playing"
+    span.currentLabel= "Artist: "
+    span.currentArtist= currentTrack.artist
+    br
+    span.currentLabel= "Album: "
+    span.currentAlbum= currentTrack.album
+    br
+    span.currentLabel= "Track: "
+    span.currentTrack= currentTrack.song
+div#djs
+  - if(djs.length == 0)
+    h2= "No one currently DJing"
+  - else
+    h2= "Currently Djing"
+    each dj, i in djs
+      span.djs= (i+1)+"."+dj.name
       br
-      span.currentLabel= "Album: "
-      span.currentAlbum= currentTrack.album
-      br
-      span.currentLabel= "Track: "
-      span.currentTrack= currentTrack.song
-  div#djs
-    - if(djs.length == 0)
-      h2= "No one currently DJing"
-    - else
-      h2= "Currently Djing"
-      each dj, i in djs
-        span.djs= (i+1)+"."+dj.name
-        br
+div#topArtists
+  h1= "Most Played Artists"
+  ol
+    each artist in topPlays
+      li= artist.name+" - Plays: "+artist.plays
+
+div#topUpvotes
+  h1= "Most Upvoted Artists"
+  ol
+    each artist in topUpvotes
+      li= artist.name+" - Upvotes: "+artist.upvotes
 div#latest_tracks
   h1= "Last 10 tracks played"
   table
@@ -38,14 +47,3 @@ div#latest_tracks
         td= song.upvotes||0
         td= song.downvotes||0
         td= ((song.upvotes/song.listeners)*100)+"%"
-div#topArtists
-  h1= "Most Played Artists"
-  ol
-    each artist in topPlays
-      li= artist.name+" - Plays: "+artist.plays
-
-div#topUpvotes
-  h1= "Most Upvoted Artists"
-  ol
-    each artist in topUpvotes
-      li= artist.name+" - Upvotes: "+artist.upvotes
