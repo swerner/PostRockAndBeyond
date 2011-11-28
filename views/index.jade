@@ -1,10 +1,10 @@
-div#djs
+#djs
   ul
-    li= djs[0] ? djs[0].name : "<empty>"
-    li= djs[1] ? djs[1].name : "<empty>"
-    li= djs[2] ? djs[2].name : "<empty>"
-    li= djs[3] ? djs[3].name : "<empty>"
-    li= djs[4] ? djs[4].name : "<empty>"
+    li= djs[0] ? djs[0].name : "------"
+    li= djs[1] ? djs[1].name : "------"
+    li= djs[2] ? djs[2].name : "------"
+    li= djs[3] ? djs[3].name : "------"
+    li= djs[4] ? djs[4].name : "------"
 #leftBox
   div#upvotedArtists
     h2= "Most Awesomed Artists"
@@ -39,18 +39,16 @@ div#djs
 
 #rightBox
   div#current
-    - if(!currentTrack)
-      h2= "Nothing Currently Playing"
+    - if(currentTrack)
+      dl
+        dt.artist="Artist:"
+        dd.artist=currentTrack.artist
+        dt.track="Track:"
+        dd.track=currentTrack.song
+        dt.album="Album:"
+        dd.album=currentTrack.album
     - else
-      h2= "Currently Playing"
-      span.currentLabel= "Artist: "
-      span.currentArtist= currentTrack.artist
-      br
-      span.currentLabel= "Album: "
-      span.currentAlbum= currentTrack.album
-      br
-      span.currentLabel= "Track: "
-      span.currentTrack= currentTrack.song
+      h2= "Nothing Currently Playing"
   div#latest_tracks
     h1= "Last 10 tracks played"
     table
@@ -67,4 +65,4 @@ div#djs
           td= song.dj.name
           td= song.upvotes||0
           td= song.downvotes||0
-          td= ((song.upvotes/song.listeners)*100)+"%"
+          td= parseInt((((song.upvotes/song.listeners)*0.5)-((song.downvotes/song.listeners)*0.5)+0.5)*100,10)+"%"

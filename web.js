@@ -72,6 +72,7 @@ app.get('/', function(request, response){
   bot.roomInfo(function(data){
     dj_data = data.room.metadata.djs;
     current_song = data.room.metadata.current_song;
+    console.log(data.room.metadata.songlog);
     if(current_song){
       current_song = current_song.metadata;
     }

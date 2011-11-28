@@ -20,7 +20,8 @@ body{
 }
 
 #header ul{
-  text-align: center; 
+  text-align: center;
+  margin-bottom: 5px;
 }
 #header ul li{
   list-style: none;
@@ -36,11 +37,34 @@ body{
   color: #B80;
   border-bottom: 1px dotted #B80;
 }
+dl{
+  display: block;
+  width: 600px;
+  background:url(../images/info_bg.png) no-repeat 0 0;
+  border-radius: 10px;
+}
+dt{
+  float: left;
+  width: 170px;
+  text-align: right;
+  margin-right: 10px;
+}
+.artist{
+  font-size: 3em;
+}
+.track{
+  font-size: 1.5em;
+}
+.album{
+  font-size: 2em;
+}
 #djs{
-  margin-bottom: 20px;
+  height: 45px;
 }
 #djs ul{
   text-align: center;
+  background:url(../images/bottom.png) no-repeat 50% bottom;
+  height: 45px;
 }
 #djs ul li{
   display: inline;
@@ -48,9 +72,9 @@ body{
   margin-right: 25px;
   font-weight: bold;
   font-size: 20px;
+  line-height: 40px;
 }
 #container{
-  margin-top: 20px;
   float: left;
 }
 #leftBox, #rightBox{
@@ -80,14 +104,6 @@ float: left;
   font-size: 12px;
 
 }
-#djs{
-  margin-top: 20px;
-}
-#djs span{
-  margin-bottom: 2px;
-  display: block;
-  font-size: 15px;
-}
 #current h2, #djs h2{
   margin-top: 0px;
 }
@@ -95,4 +111,7 @@ float: left;
   font-weight: bold;
 }
 #topArtists li{
+}
+#latest_tracks{
+  font-size: 0.8em;
 }
