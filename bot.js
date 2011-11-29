@@ -19,19 +19,27 @@ bot.on('newsong', function(data){
   var artist = data.room.metadata.current_song.metadata.artist;
   Artist.findOne({name: artist}).populate('links').run(function(err, docs){
     log_error(err);
-    if(docs && docs.links){
-      console.log("In here");
-      var response = artist + ' Links: ';
-      for(var l in docs.links){
-        console.log(l);
-        console.log(docs.links[l]);
-        response += " - "+docs.links[l].value;
-      }
-      bot.speak(response, function(a){if(a){console.log(a);}});
-    }
+    show_links(artist, docs);
   });
 
 });
+show_links_prep = function(){
+  var artist = currentSong.artist.name;
+  Artist.findOne({name: artist}).populate('links').run(function(err, docs){
+    log_error(err);
+    show_links(artist, docs);
+  });
+};
+show_links = function(artist, docs){
+  if(docs && docs.links){
+    var response = artist + ' Links: ';
+    if(docs.links.bandcamp){response += (docs.links.bandcamp+" - ");}
+    if(docs.links.facebook){response += (docs.links.facebook+" - ");}
+    if(docs.links.website){response += (docs.links.website+" - ");}
+    bot.speak(response);
+  }
+
+};
 bot.on('ready', function(data){
   bot.roomInfo(function(data){
     setCurrentSong(data);
@@ -99,6 +107,9 @@ bot.on('speak', function(data){
           case 'dw':
           case 'delwebsite':
             deleteLink('website');
+            break;
+          case 'sl':
+            show_links_prep();
             break;
         }
       }
