@@ -146,6 +146,7 @@ setLink = function(key, value){
 };
 
 setCurrentSong = function(data){
+  if(data.room.metadata.current_song){
   song = data.room.metadata.current_song;
   dj = data.room.metadata.current_dj;
   upvotes = data.room.metadata.upvotes;
@@ -174,6 +175,7 @@ setCurrentSong = function(data){
       });
     });
   });
+  }
 };
 
 updatePlayInfo = function(){
