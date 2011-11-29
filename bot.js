@@ -11,16 +11,126 @@ var Dj = mongoose.model("Dj", require("./models/dj").Dj);
 var Track = mongoose.model("Track", require("./models/track").Track);
 var Artist = mongoose.model("Artist", require("./models/artist").Artist);
 var Play = mongoose.model("Play", require("./models/play").Play);
+
 var currentSong;
 
 bot.on('newsong', function(data){
   setCurrentSong(data);
+  var artist = data.room.metadata.current_song.metadata.artist;
+  Artist.findOne({name: artist}).populate('links').run(function(err, docs){
+    log_error(err);
+    if(docs.links.length > 0){
+      var response = artist + ' Links: ';
+      for(var l in docs.links){
+        response += " - "+docs.links[l].value;
+      }
+      bot.speak(response);
+    }
+  });
+
 });
 bot.on('ready', function(data){
   bot.roomInfo(function(data){
     setCurrentSong(data);
   });
 });
+
+bot.on('update_votes', function(data){
+  currentSong.upvotes= data.room.metadata.upvotes;
+  currentSong.downvotes= data.room.metadata.downvotes;
+  currentSong.listeners= data.room.metadata.listeners;
+  currentSong.save(function(err){log_error(err);});
+});
+
+bot.on('endsong', function(){
+  updatePlayInfo();
+});
+bot.on('add_dj', function(data){
+  Dj.find_or_create_by_userid(data.user[0].userid, data.user[0].name, new Dj(), function(err, docs){
+        log_error(err);
+  });
+});
+
+bot.on('speak', function(data){
+  Dj.isAdmin(data.userid, function(err, res){
+    log_error(err);
+    if(res){
+      var result = data.text.match(/^\/(.*?)( .*)?$/);
+      if(result){
+        var command = result[1].trim().toLowerCase();
+        var param = '';
+        if (result.length == 3 && result[2]){
+          param = result[2].trim().toLowerCase();
+        }
+
+        switch(command){
+          case 'sa':
+          case 'setadmin':
+            setAdmin(param);
+            break;
+          case 'da':
+          case 'deladmin':
+            deleteAdmin(param);
+            break;
+
+          case 'sb':
+          case 'setbandcamp':
+            setLink('bandcamp', param);
+            break;
+          case 'db':
+          case 'delbandcamp':
+            deleteLink('bandcamp');
+            break;
+          case 'sf':
+          case 'setfacebook':
+            setLink('facebook', param);
+            break;
+          case 'df':
+          case 'delfacebook':
+            deleteLink('facebook');
+            break;
+          case 'sw':
+          case 'setwebsite':
+            setLink('website', param);
+            break;
+          case 'dw':
+          case 'delwebsite':
+            deleteLink('website');
+            break;
+        }
+      }
+    }
+  });
+});
+deleteAdmin = function(name){
+  bot.getProfile(name, function(data){
+    Dj.update({userid: data.userid},{admin: false},function(err, docs){
+      log_error();
+      bot.speak(name + ' is no longer an admin.');
+    });
+  });
+};
+
+setAdmin = function(name){
+  bot.getProfile(name, function(data){
+    Dj.update({userid: data.userid},{admin: true},function(err, docs){
+      bot.speak(name + ' added as an admin.');
+    });
+  });
+};
+
+deleteLink = function(key){
+  if(key && currentSong){
+    currentSong.links[key] = '';
+  }else{console.log(key,currentSong);}
+};
+
+setLink = function(key, value){
+  if(key && value && currentSong){
+    currentSong.links[key] = value;
+  }else{console.log(key, value, currentSong);}
+};
+
 setCurrentSong = function(data){
   song = data.room.metadata.current_song;
   dj = data.room.metadata.current_dj;
@@ -51,21 +161,7 @@ setCurrentSong = function(data){
     });
   });
 };
-bot.on('update_votes', function(data){
-  currentSong.upvotes= data.room.metadata.upvotes;
-  currentSong.downvotes= data.room.metadata.downvotes;
-  currentSong.listeners= data.room.metadata.listeners;
-  currentSong.save(function(err){log_error(err);});
-});
 
-bot.on('endsong', function(){
-  updatePlayInfo();
-});
-bot.on('add_dj', function(data){
-  Dj.find_or_create_by_userid(data.user[0].userid, data.user[0].name, new Dj(), function(err, docs){
-        log_error(err);
-  });
-});
 updatePlayInfo = function(){
   currentSong.dj.plays++;
   currentSong.dj.upvotes = currentSong.dj.upvotes ? currentSong.dj.upvotes+currentSong.upvotes : currentSong.upvotes;
