@@ -19,12 +19,15 @@ bot.on('newsong', function(data){
   var artist = data.room.metadata.current_song.metadata.artist;
   Artist.findOne({name: artist}).populate('links').run(function(err, docs){
     log_error(err);
-    if(docs.links.length > 0){
+    if(docs && docs.links){
+      console.log("In here");
       var response = artist + ' Links: ';
       for(var l in docs.links){
+        console.log(l);
+        console.log(docs.links[l]);
         response += " - "+docs.links[l].value;
       }
-      bot.speak(response);
+      bot.speak(response, function(a){if(a){console.log(a);}});
     }
   });
 
@@ -121,13 +124,13 @@ setAdmin = function(name){
 
 deleteLink = function(key){
   if(key && currentSong){
-    currentSong.links[key] = '';
+    currentSong.artist.links[key] = '';
   }else{console.log(key,currentSong);}
 };
 
 setLink = function(key, value){
   if(key && value && currentSong){
-    currentSong.links[key] = value;
+    currentSong.artist.links[key] = value;
   }else{console.log(key, value, currentSong);}
 };
 
