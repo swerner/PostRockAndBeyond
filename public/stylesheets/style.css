@@ -139,3 +139,6 @@ ul.links li{
   padding-bottom: 5px;
   border-bottom: 1px solid #ccc;
 }
+#content{
+  padding: 20px;
+}
