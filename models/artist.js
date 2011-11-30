@@ -34,5 +34,12 @@ Artist.statics.find_or_create_by_name = function(name, song, instance, cb){
     }
   });
 };
-
+Artist.pre('save', function(next){
+  if(!this.linkname){
+    this.linkname = this.name.toLowerCase().replace(/\ /gi, "-");
+  }
+  if(!this.lowername){
+    this.lowername = this.name.toLowerCase();
+  }
+});
 exports.Artist = Artist;
