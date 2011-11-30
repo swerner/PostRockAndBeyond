@@ -42,5 +42,6 @@ Artist.pre('save', function(next){
   if(!this.lowername){
     this.lowername = this.name.toLowerCase();
   }
+  next();
 });
 exports.Artist = Artist;
