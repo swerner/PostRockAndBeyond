@@ -44,7 +44,6 @@ a:hover{
 }
 dl{
   display: block;
-  width: 600px;
   background:url(../images/info_bg.png) no-repeat 0 0;
   border-radius: 10px;
 }
