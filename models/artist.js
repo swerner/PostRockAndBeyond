@@ -4,6 +4,7 @@ var ObjectId = Schema.ObjectId;
 
 var Artist = new Schema({
   name: String,
+  lowername: String,
   plays: {type:Number, default: 0},
   upvotes: {type: Number, default: 0},
   downvotes: {type: Number, default: 0},
@@ -22,6 +23,7 @@ Artist.statics.find_or_create_by_name = function(name, song, instance, cb){
       cb(err, docs);
     }else{
       instance.name = name;
+      instance.lowername = name.toLowerCase();
       instance.save(function(err){
         elem.findOne({name: name}, function(err, docs){
           cb(err, docs);

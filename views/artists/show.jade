@@ -1,0 +1,18 @@
+h2= artist.name
+span.plays= "Plays: "+artist.plays
+#leftBox
+  h2="Links:"
+  ul
+    if artist.links.website
+      li.link: a(href=artist.links.website)="Website"
+    if artist.links.bandcamp
+      li.link: a(href=artist.links.bandcamp)="Bandcamp"
+    if artist.links.facebook
+      li.link: a(href=artist.links.facebook)="Facebook"
+#rightBox
+  #tracks
+  ul
+    each track in artist.tracks
+      li.track
+        h3.albumname= "Album: "+track.album
+        h3.trackname= "Track: "+track.name

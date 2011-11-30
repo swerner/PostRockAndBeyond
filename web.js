@@ -120,7 +120,7 @@ app.get('/', function(request, response){
 app.get('/artists/:name', function(request, response){
   Artist.find({name: request.params.name}).populate('tracks').run(function(error, artist){
     log_error(error);
-    response.render("artist_show.jade", { locals: {
+    response.render("artists/show.jade", { locals: {
       title: "Post Rock And Beyond",
       artist: artist[0],
     }
@@ -131,14 +131,33 @@ app.get('/artists/:name', function(request, response){
 app.get('/djs/:name', function(request, response){
   Dj.find({name: request.params.name}, function(error, dj){
     log_error(error)
-    response.render("dj_show.jade", { locals: {
+    response.render("djs/show.jade", { locals: {
       title: "Post Rock And Beyond",
       dj: dj[0]
     }
     })
   });
 });
+app.get('/artists', function(request, response){
+  response.render('artists/index.jade', { locals: {
+    title: "Artists"
+  }
+  });
 
+});
+app.get('/djs', function(request, response){
+  response.render('djs/index.jade',{ locals: {
+    title: "Djs"
+  }
+  });
+});
+
+app.get('/about', function(request, response){
+  response.render('about.jade', {locals: {title: "About"}});
+});
+app.get('/contact', function(request, response){
+  response.render('contact.jade', {locals: {title: "Contact"}});
+});
 var port = process.env.PBPORT || 3000;
 app.listen(port, function(){
   console.log("Listening on " + port);
