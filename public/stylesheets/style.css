@@ -142,3 +142,10 @@ ul.links li{
 #content{
   padding: 20px;
 }
+#callouts{
+  font-size: 12px;
+  margin-top: 50px;
+}
+#callouts a{
+  margin-right: 10px;
+}
