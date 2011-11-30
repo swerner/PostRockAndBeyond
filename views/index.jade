@@ -5,6 +5,17 @@
     li= djs[2] ? djs[2].name : "------"
     li= djs[3] ? djs[3].name : "------"
     li= djs[4] ? djs[4].name : "------"
+div#current
+  - if(currentTrack)
+    dl
+      dt.artist="Artist:"
+      dd.artist=currentTrack.artist
+      dt.track="Track:"
+      dd.track=currentTrack.song
+      dt.album="Album:"
+      dd.album=currentTrack.album
+  - else
+    h2= "Nothing Currently Playing"
 #leftBox
   div#upvotedArtists
     h2= "Most Awesomed Artists"
@@ -38,26 +49,15 @@
         li= dj.plays+" - "+dj.name
 
 #rightBox
-  div#current
-    - if(currentTrack)
-      dl
-        dt.artist="Artist:"
-        dd.artist=currentTrack.artist
-        dt.track="Track:"
-        dd.track=currentTrack.song
-        dt.album="Album:"
-        dd.album=currentTrack.album
-    - else
-      h2= "Nothing Currently Playing"
   div#latest_tracks
     h1= "Last 10 tracks played"
     table
       th= "Artist"
       th= "Song Title"
       th= "Dj"
-      th= "Awesomes"
-      th= "Lames"
-      th= "Percentage"
+      th= "A"
+      th= "L"
+      th= "%"
       each song, i in songs
         tr
           td= song.artist.name
