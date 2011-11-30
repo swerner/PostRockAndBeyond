@@ -109,6 +109,9 @@ float: left;
   font-size: 12px;
 
 }
+#current{
+  margin-left: 10px;
+}
 #current h2, #djs h2{
   margin-top: 0px;
 }
