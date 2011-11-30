@@ -4,7 +4,7 @@ html{
 body{
   width: 960px;
   margin: 0 auto;
-  font-family: 'Federo', sans-serif;
+  font-family: 'Helvetica', Arial, sans-serif;
   background-color: rgba(250,245,255,0.5);
   box-shadow: 0px 0px 35px 0px #CB0;
   clear: both;
@@ -12,6 +12,10 @@ body{
 .clearfix{
   clear: both;
 }
+h1,h2,h3,h4,h5,h6{
+  font-family: 'Federo', sans-serif;
+}
+
 
 #header h1{
   text-align: center;
