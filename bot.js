@@ -36,6 +36,7 @@ show_links = function(artist, docs){
     if(docs.links.bandcamp){response += (docs.links.bandcamp+" - ");}
     if(docs.links.facebook){response += (docs.links.facebook+" - ");}
     if(docs.links.website){response += (docs.links.website+" - ");}
+    if(docs.links.lastfm){response += (docs.links.website+" - ");}
     bot.speak(response);
   }
 
@@ -107,6 +108,14 @@ bot.on('speak', function(data){
           case 'dw':
           case 'delwebsite':
             deleteLink('website');
+            break;
+          case 'sfm':
+          case 'setlast':
+            setLink('lastfm', param);
+            break;
+          case 'dfm':
+          case 'dellast':
+            deleteLink('lastfm');
             break;
           case 'sl':
             show_links_prep();

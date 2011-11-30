@@ -13,7 +13,8 @@ var Artist = new Schema({
   links: {
     bandcamp: String,
     facebook: String,
-    website: String
+    website: String,
+    lastfm: String
   }
 });
 
