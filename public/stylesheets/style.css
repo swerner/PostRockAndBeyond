@@ -6,7 +6,7 @@ body{
   margin: 0 auto;
   font-family: Verdana, Geneva, sans-serif;
   background-color: rgba(250,245,255,0.5);
-  box-shadow: 0px 0px 35px 0px #CB0;
+  box-shadow: 0px 0px 35px 0px #CCC;
   clear: both;
 }
 .clearfix{
