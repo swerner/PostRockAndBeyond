@@ -136,12 +136,18 @@ setAdmin = function(name){
 deleteLink = function(key){
   if(key && currentSong){
     currentSong.artist.links[key] = '';
+    artist = currentSong.artist;
+    artist.save(function(err){log_error();});
+    bot.speak("Removed "+key+" link");
   }else{console.log(key,currentSong);}
 };
 
 setLink = function(key, value){
   if(key && value && currentSong){
     currentSong.artist.links[key] = value;
+    artist = currentSong.artist;
+    artist.save(function(err){log_error();});
+    bot.speak("Added "+key+" link: "+value);
   }else{console.log(key, value, currentSong);}
 };
 
