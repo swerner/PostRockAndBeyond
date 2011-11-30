@@ -31,7 +31,7 @@ show_links_prep = function(){
   });
 };
 show_links = function(artist, docs){
-  if(docs && docs.links){
+  if(docs && docs.links && Object.keys(docs.links).length > 0){
     var response = artist + ' Links: ';
     if(docs.links.bandcamp){response += (docs.links.bandcamp+" - ");}
     if(docs.links.facebook){response += (docs.links.facebook+" - ");}
