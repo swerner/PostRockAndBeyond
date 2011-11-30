@@ -1,8 +1,10 @@
-h2= artist.name
-span.plays= "Plays: "+artist.plays
+#artistHead
+  h2= artist.name
+  div.plays= "Plays: "+artist.plays
+  div.awesomes= "Awesomes: "+artist.upvotes
 #leftBox
   h2="Links:"
-  ul
+  ul.links
     if artist.links.website
       li.link: a(href=artist.links.website)="Website"
     if artist.links.bandcamp
@@ -11,8 +13,9 @@ span.plays= "Plays: "+artist.plays
       li.link: a(href=artist.links.facebook)="Facebook"
 #rightBox
   #tracks
-  ul
-    each track in artist.tracks
-      li.track
-        h3.albumname= "Album: "+track.album
-        h3.trackname= "Track: "+track.name
+    h2= "Tracks Played"
+    ul
+      each track in artist.tracks
+        li.track
+          div.albumname= "Album: "+track.album
+          div.trackname= "Track: "+track.name

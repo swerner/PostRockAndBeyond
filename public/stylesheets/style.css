@@ -32,12 +32,12 @@ h1,h2,h3,h4,h5,h6{
   margin-right: 15px;
   display: inline;
 }
-#header ul li a{
+a{
   color: black;
   border-bottom: 1px dotted black;
   text-decoration: none;
 }
-#header ul li a:hover{
+a:hover{
   color: #B80;
   border-bottom: 1px dotted #B80;
 }
@@ -118,4 +118,24 @@ float: left;
 }
 #latest_tracks{
   font-size: 0.8em;
+}
+
+#artistHead{
+  text-align: center;
+}
+
+
+#tracks ul, ul.links{
+  list-style: none;
+  padding-left: 0;
+}
+ul.links li{
+  margin-bottom: 5px;
+  font-size: 20px;
+}
+#tracks ul li{
+  margin-bottom: 10px;
+  font-size: 14px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ccc;
 }
