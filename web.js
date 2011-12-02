@@ -21,7 +21,6 @@ app.configure(function(){
   app.set('view engine', 'jade');
   app.use(express.bodyParser());
   app.use(express.methodOverride());
-  app.use(require('stylus').middleware({src: __dirname + '/public' }));
   app.use(app.router);
   app.use(express.static(__dirname +'/public'));
 });
@@ -139,16 +138,24 @@ app.get('/djs/:name', function(request, response){
   });
 });
 app.get('/artists', function(request, response){
-  response.render('artists/index.jade', { locals: {
-    title: "Artists"
-  }
+  Artist.find().sort('name', 1).run(function(error, artists){
+    log_error(error);
+    response.render('artists/index.jade', { locals: {
+        title: "Artists",
+        artists: artists
+      }
+    });
   });
 
 });
 app.get('/djs', function(request, response){
-  response.render('djs/index.jade',{ locals: {
-    title: "Djs"
-  }
+  Dj.find().sort('name', 1).run(function(error, djs){
+    log_error(error);
+    response.render('djs/index.jade',{ locals: {
+        title: "Djs",
+        djs: djs
+      }
+    });
   });
 });
 

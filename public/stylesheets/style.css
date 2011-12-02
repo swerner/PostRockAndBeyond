@@ -80,6 +80,7 @@ dt{
 }
 #container{
   float: left;
+  width: 960px;
 }
 #leftBox, #rightBox{
 float: left;
@@ -151,4 +152,16 @@ ul.links li{
 }
 #callouts a{
   margin-right: 10px;
+}
+#index h2{
+  text-align: center;
+}
+#index ul{
+  width: 800px;
+  margin: 10px auto;
+}
+#index ul li{
+  display: inline-block;
+  width: 160px;
+  font-size: 10px;
 }

@@ -1,0 +1,6 @@
+#index
+  h2= "Artists"
+  ul
+    each artist in artists
+      li
+        a(href="/artists/"+artist.name)=artist.name
