@@ -171,3 +171,6 @@ ul.links li{
 #tracks .meta div{
   display: inline;
 }
+#tracks .trackname{
+  font-weight: bold;
+}
