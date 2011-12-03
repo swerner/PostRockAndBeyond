@@ -118,7 +118,7 @@ app.get('/', function(request, response){
 app.get('/artists/:name', function(request, response){
   Artist.find({name: request.params.name}).run(function(error, artist){
     log_error(error, response);
-    Play.find({artist: artist[0]._id}).populate('dj').populate('track').limit(20).run(function(error, plays){
+    Play.find({artist: artist[0]._id}).sort('timestamp', -1).populate('dj').populate('track').limit(20).run(function(error, plays){
       log_error(error, response);
       Track.find({artist: artist[0]._id}).limit(10).sort('plays', -1).run(function(error, played){
         log_error(error, response);
