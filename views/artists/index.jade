@@ -3,4 +3,4 @@
   ul
     each artist in artists
       li
-        a(href="/artists/"+artist.name)=artist.name
+        a(href="/artists/"+encodeURIComponent(artist.name).replace("!", "%21"))=artist.name

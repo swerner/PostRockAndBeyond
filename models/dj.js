@@ -6,6 +6,7 @@ var Dj = new Schema({
   name: String,
   userid: String,
   admin: {type:Boolean, default: false},
+  banned: {type:Boolean, default: false},
   plays: {type:Number, default: 0},
   upvotes: {type: Number, default: 0},
   downvotes: {type: Number, default: 0}
