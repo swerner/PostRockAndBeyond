@@ -19,8 +19,8 @@
     ul
       each play in plays
         li.track
-          div.albumname= "Album: "+play.track.album
           div.trackname= "Track: "+play.track.name
+          div.albumname= "Album: "+play.track.album
           div.meta
             div.dj= "Played by "+play.dj.name+" "
             div.time= " at "+new Date(play.timestamp*1000)+" "
