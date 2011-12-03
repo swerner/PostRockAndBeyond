@@ -24,25 +24,25 @@ app.configure(function(){
   app.use(app.router);
   app.use(express.static(__dirname +'/public'));
 });
-app.get('/test', function(req, resp){
+app.get('/test', function(request, response){
   djs = ['4ecc217b4fe7d03a6c000529','4e4179044fe7d02e6f040501','4e13d951a3f75114d00887eb'];
-  Dj.find({userid: {$in: djs}}, function(err, djs){
-    log_error(err);
-    Play.find().sort('timestamp', -1).populate('dj').populate('artist').populate('track').limit(10).run(function(err, songs){
-      log_error(err);
-      Artist.find().sort('plays', -1).limit(10).run(function(err, topArtists){
-        log_error(err);
-        Artist.find().sort('upvotes', -1).limit(10).run(function(err, upvotedArtists){
-          log_error(err);
-          Track.find().sort('plays', -1).limit(10).run(function(err, topSongs){
-            log_error(err);
-            Track.find().sort('upvotes', -1).limit(10).run(function(err, upvotedSongs){
-              log_error(err);
-              Dj.find().sort('plays', -1).limit(10).run(function(err, topDjs){
-                log_error(err);
-                Dj.find().sort('upvotes', -1).limit(10).run(function(err, upvotedDjs){
-                  log_error(err);
-                  resp.render('index.jade', {
+  Dj.find({userid: {$in: djs}}, function(error, djs){
+    log_error(error, response);
+    Play.find().sort('timestamp', -1).populate('dj').populate('artist').populate('track').limit(10).run(function(error, songs){
+      log_error(error, response);
+      Artist.find().sort('plays', -1).limit(10).run(function(error, topArtists){
+        log_error(error, response);
+        Artist.find().sort('upvotes', -1).limit(10).run(function(error, upvotedArtists){
+          log_error(error, response);
+          Track.find().sort('plays', -1).limit(10).run(function(error, topSongs){
+            log_error(error, response);
+            Track.find().sort('upvotes', -1).limit(10).run(function(error, upvotedSongs){
+              log_error(error, response);
+              Dj.find().sort('plays', -1).limit(10).run(function(error, topDjs){
+                log_error(error, response);
+                Dj.find().sort('upvotes', -1).limit(10).run(function(error, upvotedDjs){
+                  log_error(error, response);
+                  response.render('index.jade', {
                     locals: {
                       title: "Home",
                       currentTrack: {artist: "Toe", album: "For Long Tomorrow", song: "Goodbye"},
@@ -64,7 +64,6 @@ app.get('/test', function(req, resp){
       });
     });
   });
-
 });
 
 app.get('/', function(request, response){
@@ -74,22 +73,22 @@ app.get('/', function(request, response){
     if(current_song){
       current_song = current_song.metadata;
     }
-  Dj.find({userid: {$in: dj_data}}, function(err, djs){
-    log_error(err);
-    Play.find().sort('timestamp', -1).populate('dj').populate('artist').populate('track').limit(10).run(function(err, songs){
-      log_error(err);
-      Artist.find().sort('plays', -1).limit(10).run(function(err, topArtists){
-        log_error(err);
-        Artist.find().sort('upvotes', -1).limit(10).run(function(err, upvotedArtists){
-          log_error(err);
-          Track.find().sort('plays', -1).limit(10).run(function(err, topSongs){
-            log_error(err);
-            Track.find().sort('upvotes', -1).limit(10).run(function(err, upvotedSongs){
-              log_error(err);
-              Dj.find().sort('plays', -1).limit(10).run(function(err, topDjs){
-                log_error(err);
-                Dj.find().sort('upvotes', -1).limit(10).run(function(err, upvotedDjs){
-                  log_error(err);
+  Dj.find({userid: {$in: dj_data}}, function(error, djs){
+    log_error(error, response);
+    Play.find().sort('timestamp', -1).populate('dj').populate('artist').populate('track').limit(10).run(function(error, songs){
+      log_error(error, response);
+      Artist.find().sort('plays', -1).limit(10).run(function(error, topArtists){
+        log_error(error, response);
+        Artist.find().sort('upvotes', -1).limit(10).run(function(error, upvotedArtists){
+          log_error(error, response);
+          Track.find().sort('plays', -1).limit(10).run(function(error, topSongs){
+            log_error(error, response);
+            Track.find().sort('upvotes', -1).limit(10).run(function(error, upvotedSongs){
+              log_error(error, response);
+              Dj.find().sort('plays', -1).limit(10).run(function(error, topDjs){
+                log_error(error, response);
+                Dj.find().sort('upvotes', -1).limit(10).run(function(error, upvotedDjs){
+                  log_error(error, response);
                   response.render('index.jade', {
                     locals: {
                       title: "Home",
@@ -117,19 +116,23 @@ app.get('/', function(request, response){
 
 
 app.get('/artists/:name', function(request, response){
-  Artist.find({name: request.params.name}).populate('tracks').run(function(error, artist){
-    log_error(error);
-    response.render("artists/show.jade", { locals: {
-      title: "Post Rock And Beyond",
-      artist: artist[0],
-    }
+  Artist.find({name: request.params.name}).run(function(error, artist){
+    log_error(error, response);
+    Play.find({artist: artist[0]._id}).populate('dj').populate('track').run(function(err, plays){
+      log_error(error, response);
+      response.render("artists/show.jade", { locals: {
+        title: "Post Rock And Beyond",
+        artist: artist[0],
+        plays: plays
+      }
+      });
     });
   });
 });
 
 app.get('/djs/:name', function(request, response){
   Dj.find({name: request.params.name}, function(error, dj){
-    log_error(error)
+    log_error(error, response)
     response.render("djs/show.jade", { locals: {
       title: "Post Rock And Beyond",
       dj: dj[0]
@@ -139,7 +142,7 @@ app.get('/djs/:name', function(request, response){
 });
 app.get('/artists', function(request, response){
   Artist.find().sort('name', 1).run(function(error, artists){
-    log_error(error);
+    log_error(error, response);
     response.render('artists/index.jade', { locals: {
         title: "Artists",
         artists: artists
@@ -150,7 +153,7 @@ app.get('/artists', function(request, response){
 });
 app.get('/djs', function(request, response){
   Dj.find().sort('name', 1).run(function(error, djs){
-    log_error(error);
+    log_error(error, response);
     response.render('djs/index.jade',{ locals: {
         title: "Djs",
         djs: djs
@@ -170,9 +173,10 @@ app.listen(port, function(){
   console.log("Listening on " + port);
 });
 
-log_error = function(err){
+log_error = function(err, resp){
   if(err){
     console.log(err);
+    resp.render("error.jade");
   }
 };
 

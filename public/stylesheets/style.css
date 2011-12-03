@@ -165,3 +165,9 @@ ul.links li{
   width: 160px;
   font-size: 10px;
 }
+#tracks .meta{
+  font-size: 10px;
+}
+#tracks .meta div{
+  display: inline;
+}

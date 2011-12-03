@@ -17,7 +17,11 @@
   #tracks
     h2= "Tracks Played"
     ul
-      each track in artist.tracks
+      each play in plays
         li.track
-          div.albumname= "Album: "+track.album
-          div.trackname= "Track: "+track.name
+          div.albumname= "Album: "+play.track.album
+          div.trackname= "Track: "+play.track.name
+          div.meta
+            div.dj= "Played by "+play.dj.name+" "
+            div.time= " at "+new Date(play.timestamp*1000)+" "
+            div.awesomes= " with "+play.upvotes+" awesomes"

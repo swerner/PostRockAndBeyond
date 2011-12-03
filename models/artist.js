@@ -9,7 +9,7 @@ var Artist = new Schema({
   plays: {type:Number, default: 0},
   upvotes: {type: Number, default: 0},
   downvotes: {type: Number, default: 0},
-  tracks: [{type: Schema.ObjectId, ref :'Track'}],
+  tracks: [{type: Schema.ObjectId, ref :'Track', index: {unique: true, dropDups: true}}],
   links: {
     bandcamp: String,
     facebook: String,
