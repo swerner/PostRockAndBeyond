@@ -16,30 +16,13 @@ var currentSong;
 
 bot.on('newsong', function(data){
   setCurrentSong(data);
-  var artist = data.room.metadata.current_song.metadata.artist;
-  Artist.findOne({name: artist}).populate('links').run(function(err, docs){
-    log_error(err);
-    show_links(artist, docs);
-  });
-
+  show_link(data.room.metadata.current_song.metadata.artist);
 });
-show_links_prep = function(){
-  var artist = currentSong.artist.name;
-  Artist.findOne({name: artist}).populate('links').run(function(err, docs){
-    log_error(err);
-    show_links(artist, docs);
-  });
-};
-show_links = function(artist, docs){
-  if(docs && docs.links && Object.keys(docs.links).length > 0){
-    var response = artist + ' Links: ';
-    if(docs.links.bandcamp){response += (docs.links.bandcamp+" - ");}
-    if(docs.links.facebook){response += (docs.links.facebook+" - ");}
-    if(docs.links.website){response += (docs.links.website+" - ");}
-    if(docs.links.lastfm){response += (docs.links.website+" - ");}
+show_link = function(artist){
+    var response = artist + ' Link: ';
+    response+="http://www.postrockandbeyond.com/artists/";
+    response+=escape(artist);
     bot.speak(response);
-  }
-
 };
 bot.on('ready', function(data){
   bot.roomInfo(function(data){
@@ -118,7 +101,7 @@ bot.on('speak', function(data){
             deleteLink('lastfm');
             break;
           case 'sl':
-            show_links_prep();
+            show_link(currentSong.artist.name);
             break;
         }
       }
