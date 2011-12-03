@@ -13,6 +13,14 @@
       li.link: a(href=artist.links.facebook)="Facebook"
     if artist.links.lastfm
       li.link: a(href=artist.links.lastfm)="Last.fm"
+  h2="Top Awesomed Tracks:"
+  ul.top-tracks
+    each track in topTracks
+      li= track.upvotes+" - "+track.name
+  h2="Top Played Tracks:"
+  ul.top-played
+    each track in topPlayed
+      li= track.plays+" - "+track.name
 #rightBox
   #tracks
     h2= "Tracks Played"

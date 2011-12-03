@@ -118,13 +118,19 @@ app.get('/', function(request, response){
 app.get('/artists/:name', function(request, response){
   Artist.find({name: request.params.name}).run(function(error, artist){
     log_error(error, response);
-    Play.find({artist: artist[0]._id}).populate('dj').populate('track').run(function(err, plays){
+    Play.find({artist: artist[0]._id}).populate('dj').populate('track').run(function(error, plays){
       log_error(error, response);
-      response.render("artists/show.jade", { locals: {
-        title: "Post Rock And Beyond",
-        artist: artist[0],
-        plays: plays
-      }
+      Track.find({artist: artist[0]._id}).limit(10).sort('plays', 1).run(function(error, played){
+        log_error(error, response);
+        Track.find({artist: artist[0]._id}).limit(10).sort('upvotes', 1).run(function(error, tracks){
+        response.render("artists/show.jade", { locals: {
+          title: "Post Rock And Beyond",
+          artist: artist[0],
+          plays: plays,
+          topPlayed: played,
+          topTracks: tracks
+        }});
+        });
       });
     });
   });
