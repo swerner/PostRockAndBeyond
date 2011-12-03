@@ -19,7 +19,7 @@ bot.on('newsong', function(data){
   show_link(data.room.metadata.current_song.metadata.artist);
 });
 show_link = function(artist){
-    var response = artist + ' Link: ';
+    var response = artist + ' Info: ';
     response+="http://www.postrockandbeyond.com/artists/";
     response+=escape(artist);
     bot.speak(response);
