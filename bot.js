@@ -12,11 +12,14 @@ var Track = mongoose.model("Track", require("./models/track").Track);
 var Artist = mongoose.model("Artist", require("./models/artist").Artist);
 var Play = mongoose.model("Play", require("./models/play").Play);
 
+var twitter = require('./tweets').twitter;
+
 var currentSong;
 
 bot.on('newsong', function(data){
   setCurrentSong(data);
   show_link(data.room.metadata.current_song.metadata.artist);
+  tweet_song(data.room.metadata.current_song.metadata.artist);
 });
 show_link = function(artist){
     var response = artist + ' Info: ';
@@ -103,11 +106,20 @@ bot.on('speak', function(data){
           case 'sl':
             show_link(currentSong.artist.name);
             break;
+          case 'tweet':
+            tweet_song(currentSong.artist.name);
+            break;
         }
       }
     }
   });
 });
+
+tweet_song = function(artist){
+  var status = "Now playing #"+artist.toLowerCase().replace(/\ /gi,"")+" in http://turntable.fm/postrock_beyond"
+  twitter.verifyCredentials(function(){}).updateStatus(status, function(){});
+};
+
 deleteAdmin = function(name){
   bot.getProfile(name, function(data){
     Dj.update({userid: data.userid},{admin: false},function(err, docs){
