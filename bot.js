@@ -116,7 +116,7 @@ bot.on('speak', function(data){
 });
 
 tweet_song = function(artist){
-  var status = "Now playing #"+artist.toLowerCase().replace(/\ /gi,"")+" in http://turntable.fm/postrock_beyond"
+  var status = "Now playing #"+artist.toLowerCase().replace(/\ /gi,"")+" in http://turntable.fm/postrock_beyond #turntablefm"
   twitter.verifyCredentials(function(){}).updateStatus(status, function(){});
 };
 
