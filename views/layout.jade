@@ -15,41 +15,23 @@ html
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
       })();
 
-  if(typeof(artistName) !== 'undefined')
-    body(class= artistName)
-      #header
-        h1
-          a(href="/", style="border-bottom:0px")= "Post Rock & Beyond"
-        ul
-          li
-            a(href='/artists')="Artists"
-          li
-            a(href='/djs')="Djs"
-          li
-            a(href='http://turntable.fm/postrock_beyond')="Turntable.fm Room"
-          li
-            a(href='/about')="About"
-          li
-            a(href='/contact')="Contact"
-      #container!= body
-      .clearfix
-  else
-    body
-      #header
-        h1
-          a(href="/", style="border-bottom:0px")= "Post Rock & Beyond"
-        ul
-          li
-            a(href='/artists')="Artists"
-          li
-            a(href='/djs')="Djs"
-          li
-            a(href='http://turntable.fm/postrock_beyond')="Turntable.fm Room"
-          li
-            a(href='/about')="About"
-          li
-            a(href='/contact')="Contact"
-      #container!= body
-      .clearfix
+  - if(typeof(artistName) === 'undefined')
+     - artistName = ""
 
-
+  body(class= artistName)
+    #header
+      h1
+        a(href="/", style="border-bottom:0px")= "Post Rock & Beyond"
+      ul
+        li
+          a(href='/artists')="Artists"
+        li
+          a(href='/djs')="Djs"
+        li
+          a(href='http://turntable.fm/postrock_beyond')="Turntable.fm Room"
+        li
+          a(href='/about')="About"
+        li
+          a(href='/contact')="Contact"
+    #container!= body
+    .clearfix
