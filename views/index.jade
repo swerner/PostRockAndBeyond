@@ -21,7 +21,8 @@ div#current
     h2= "Most Awesomed Artists"
     ol
       each artist in upvotedArtists
-        li= artist.upvotes+" - "+artist.name
+        li= artist.upvotes+" - "
+          a(href="/artists/"+encodeURIComponent(artist.name))=artist.name
   div#upvotedSongs
     h2= "Most Awesomed Songs"
     ol
@@ -31,12 +32,14 @@ div#current
     h2= "Most Awesomed Djs"
     ol
       each dj in upvotedDjs
-        li= dj.upvotes+" - "+dj.name
+        li= dj.upvotes+" - "
+          a(href="/djs/"+encodeURIComponent(dj.name))=dj.name
   div#topArtists
     h2= "Most Played Artists"
     ol
       each artist in topArtists
-        li= artist.plays+" - "+artist.name
+        li= artist.plays+" - "
+          a(href="/artists/"+encodeURIComponent(artist.name))=artist.name
   div#topSongs
     h2= "Most Played Songs"
     ol 
@@ -46,7 +49,8 @@ div#current
     h2= "Most Played Djs"
     ol
       each dj in topDjs
-        li= dj.plays+" - "+dj.name
+        li= dj.plays+" - "
+          a(href="/djs/"+encodeURIComponent(dj.name))=dj.name
 
 #rightBox
   div#latest_tracks
@@ -60,7 +64,8 @@ div#current
       th= "%"
       each song, i in songs
         tr
-          td= song.artist.name
+          td
+            a(href="/artists/"+encodeURIComponent(song.artist.name))=song.artist.name
           td= song.track.name
           td= song.dj.name
           td= song.upvotes||0
