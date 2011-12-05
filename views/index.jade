@@ -4,7 +4,7 @@ div#current.group
     dl
       dt.artist="Artist:"
       dd.artist
-        a(href="/artists/"+encodeURIComponent(currentTrack.artist))= currentTrack.artist.name
+        a(href="/artists/"+encodeURIComponent(currentTrack.artist.name))= currentTrack.artist.name
       dt.track="Track:"
       dd.track=currentTrack.track.name
       dt.album="Album:"
