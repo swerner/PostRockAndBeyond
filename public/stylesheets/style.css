@@ -64,7 +64,9 @@ td{
   padding: 6px;
   vertical-align: middle;
 }
-
+#header{
+  margin: 30px 0 50px 0;
+}
 #header h1{
   text-align: center;
   font-weight: bold;

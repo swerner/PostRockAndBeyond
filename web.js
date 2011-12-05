@@ -25,10 +25,6 @@ app.configure(function(){
   app.use(express.static(__dirname +'/public'));
 });
 app.get('/', function(request, response){
-  bot.roomInfo(function(data){
-    dj_data = data.room.metadata.djs;
-    Dj.find({userid: {$in: dj_data}}, function(error, djs){
-      log_error(error, response);
       Play.find().sort('timestamp', -1).populate('dj').populate('artist').populate('track').limit(10).run(function(error, songs){
         log_error(error, response);
         Artist.find().sort('plays', -1).limit(10).run(function(error, topArtists){
@@ -48,7 +44,6 @@ app.get('/', function(request, response){
                       locals: {
                         title: "Home",
                         currentTrack: songs[0],
-                        djs: djs,
                         songs: songs,
                         topArtists: topArtists,
                         upvotedArtists: upvotedArtists,
@@ -60,8 +55,6 @@ app.get('/', function(request, response){
                     });
                   });
                 });
-              });
-            });
           });
         });
       });
