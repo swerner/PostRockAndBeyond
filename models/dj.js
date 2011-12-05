@@ -4,7 +4,7 @@ var ObjectId = Schema.ObjectId;
 
 var Dj = new Schema({
   name: String,
-  userid: String,
+  userid: {type: String, index: true},
   admin: {type:Boolean, default: false},
   banned: {type:Boolean, default: false},
   plays: {type:Number, default: 0},

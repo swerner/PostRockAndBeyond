@@ -4,7 +4,7 @@ var ObjectId = Schema.ObjectId;
 
 var Artist = new Schema({
   name: String,
-  lowername: String,
+  lowername: {type: String, index: true},
   linkname: String,
   plays: {type:Number, default: 0},
   upvotes: {type: Number, default: 0},

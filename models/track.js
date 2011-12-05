@@ -8,7 +8,7 @@ var Track = new Schema({
   plays: {type:Number, default: 0},
   upvotes: {type:Number, default: 0},
   downvotes: {type:Number, default: 0},
-  artist: {type: Schema.ObjectId, ref:'Artist'}
+  artist: {type: Schema.ObjectId, ref:'Artist', index: true}
 });
 
 Track.statics.find_or_create_by_name = function(name, album, artist, instance, cb){

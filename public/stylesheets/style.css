@@ -4,19 +4,66 @@ html{
 body{
   width: 960px;
   margin: 0 auto;
-  font-family: Verdana, Geneva, sans-serif;
-  background-color: rgba(250,245,255,0.5);
-  box-shadow: 0px 0px 35px 0px #CCC;
-  border-radius: 6px;
+  color: #4f6b72;
+  font-family: 'Lucida Sans Unicode', "Lucida Grande", sans-serif;
   clear: both;
 }
 .clearfix{
   clear: both;
 }
-h1,h2,h3,h4,h5,h6{
-  font-family: 'Federo', sans-serif;
+ol, ul{
+  list-style: none;
+  margin: 0 0 0.6em 0;
 }
-
+h1,h2,h3,h4,h5,h6{
+  line-height: 1;
+  margin: 0 0 0.6em 0;
+  font-weight: bold;
+  color: #333;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.7);
+  text-transform: capitalize;
+}
+h1{
+  font-size: 2.25em;
+}
+h2{
+  font-size: 22px;
+}
+h3{
+  font-size: 1.25em;
+}
+h4{
+  font-size: 1.125em;
+}
+.group:after{
+  content: ".";
+  display: block;
+  height: 0;
+  visibility: hidden;
+  clear: both;
+}
+li{
+  list-style: none;
+}
+table{
+  width: 100%;
+  margin: 0 auto 15px;
+  border-spacing: 0;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+th{
+  color: #797268;
+  letter-spacing: 0.125em;
+  text-transform: uppercase;
+  text-align: left;
+  padding: 6px;
+  font-weight: bold;
+}
+td{
+  padding: 6px;
+  vertical-align: middle;
+}
 
 #header h1{
   text-align: center;
@@ -44,12 +91,16 @@ a:hover{
 }
 dl{
   display: block;
-  background:url(../images/info_bg.png) no-repeat 0 0;
-  border-radius: 10px;
+  line-height: 1.25;
+}
+dl a{
+  color: #4f6b72;
+  border-bottom: 0;
+
 }
 dt{
   float: left;
-  width: 170px;
+  width: 148px;
   text-align: right;
   margin-right: 10px;
 }
@@ -62,21 +113,19 @@ dt{
 .album{
   font-size: 2em;
 }
-#djs{
-  height: 45px;
-}
-#djs ul{
-  text-align: center;
-  background:url(../images/bottom.png) no-repeat 50% bottom;
-  height: 45px;
-}
 #djs ul li{
-  display: inline;
-  list-style: none;
-  margin-right: 25px;
+  display: block;
+  padding: 10px;
+  float: left;
+  line-height: 60px;
   font-weight: bold;
   font-size: 20px;
-  line-height: 40px;
+}
+div.stats{
+  float: left;
+  width: 300px;
+  margin-right: 10px;
+  height: 400px;
 }
 #container{
   float: left;
@@ -110,9 +159,19 @@ float: left;
 
 }
 #current{
-  margin-left: 10px;
+  padding: 10px 10px 10px 0;
+  position: relative;
+  margin: 0 0 1em 0;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
 }
-#current h2, #djs h2{
+#current h2{
+  position: absolute;
+  top: -13px;
+  padding-right: 8px;
+  background: url(../images/concrete_wall_2.png);
+}
+#djs h2{
   margin-top: 0px;
 }
 .currentLabel{
@@ -122,6 +181,14 @@ float: left;
 }
 #latest_tracks{
   font-size: 0.8em;
+  margin-bottom: 30px;
+}
+#latest_tracks h1{
+  text-align: center;
+}
+#latest_tracks tr:nth-child(odd){
+  background: rgba(255, 255, 255, 0.6);
+  color: #797268;
 }
 
 #artistHead{

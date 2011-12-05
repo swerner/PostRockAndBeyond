@@ -10,8 +10,8 @@ var Play = new Schema({
   upvotes: {type: Number, default: 0},
   downvotes: {type: Number, default: 0},
   listeners: {type: Number, default: 0},
-  dj: {type: Schema.ObjectId, ref: 'Dj'},
-  artist: {type: Schema.ObjectId, ref: 'Artist'},
+  dj: {type: Schema.ObjectId, ref: 'Dj', index: true},
+  artist: {type: Schema.ObjectId, ref: 'Artist', index: true},
   track: {type: Schema.ObjectId, ref: 'Track'}
 });
 
