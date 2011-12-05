@@ -214,3 +214,4 @@ log_error = function(err){
   }
 };
 exports.bot = bot;
+exports.currentSong = currentSong;

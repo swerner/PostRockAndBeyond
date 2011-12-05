@@ -12,11 +12,11 @@ div#current.group
     dl
       dt.artist="Artist:"
       dd.artist
-        a(href="/artists/"+encodeURIComponent(currentTrack.artist))= currentTrack.artist
+        a(href="/artists/"+encodeURIComponent(currentTrack.artist))= currentTrack.artist.name
       dt.track="Track:"
-      dd.track=currentTrack.song
+      dd.track=currentTrack.track.name
       dt.album="Album:"
-      dd.album=currentTrack.album
+      dd.album=currentTrack.track.album
   - else
     h2= "Nothing Currently Playing"
 

@@ -27,10 +27,6 @@ app.configure(function(){
 app.get('/', function(request, response){
   bot.roomInfo(function(data){
     dj_data = data.room.metadata.djs;
-    current_song = data.room.metadata.current_song;
-    if(current_song){
-      current_song = current_song.metadata;
-    }
     Dj.find({userid: {$in: dj_data}}, function(error, djs){
       log_error(error, response);
       Play.find().sort('timestamp', -1).populate('dj').populate('artist').populate('track').limit(10).run(function(error, songs){
@@ -47,10 +43,11 @@ app.get('/', function(request, response){
                   log_error(error, response);
                   Dj.find().sort('upvotes', -1).limit(10).run(function(error, upvotedDjs){
                     log_error(error, response);
+                    console.log(songs[0]);
                     response.render('index.jade', {
                       locals: {
                         title: "Home",
-                        currentTrack: current_song,
+                        currentTrack: songs[0],
                         djs: djs,
                         songs: songs,
                         topArtists: topArtists,
