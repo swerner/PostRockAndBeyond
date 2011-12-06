@@ -39,7 +39,6 @@ app.get('/', function(request, response){
                   log_error(error, response);
                   Dj.find().sort('upvotes', -1).limit(10).run(function(error, upvotedDjs){
                     log_error(error, response);
-                    console.log(songs[0]);
                     response.render('index.jade', {
                       locals: {
                         title: "Home",
