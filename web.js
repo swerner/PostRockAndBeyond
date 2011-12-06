@@ -1,5 +1,6 @@
 var express = require('express');
 var mongoose = require('mongoose');
+var settings = require('./site_config');
 var Bot = require('ttapi');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
@@ -15,6 +16,15 @@ var Track = mongoose.model("Track", require("./models/track").Track);
 var Artist = mongoose.model("Artist", require("./models/artist").Artist);
 var Play = mongoose.model("Play", require("./models/play").Play);
 
+
+var airbrake;
+if(settings.airbrake && settings.airbrake.apikey){
+  airbrake = require('airbrake').createClient(settings.airbrake.apikey);
+}
+process.addListener('uncaughtException', function(err, stack){
+  console.log("Caught Exception: "+err+"\n"+err.stack);
+  if(airbrake){airbrake.notify(err);}
+});
 
 app.configure(function(){
   app.set('views', __dirname+'/views');
@@ -126,7 +136,7 @@ app.get('/about', function(request, response){
 app.get('/contact', function(request, response){
   response.render('contact.jade', {locals: {title: "Contact"}});
 });
-var port = process.env.PBPORT || 3000;
+var port = settings.port || 3000;
 app.listen(port, function(){
   console.log("Listening on " + port);
 });

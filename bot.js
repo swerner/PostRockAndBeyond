@@ -1,7 +1,8 @@
+var settings = require('./site_config.js');
 var Bot = require('ttapi');
-var AUTH= process.env.PRABBAUTH;
-var USERID= process.env.PRABBUSERID;
-var ROOM= process.env.PRABBROOM;
+var AUTH= settings.bot.auth;
+var USERID= settings.bot.userid;
+var ROOM= settings.bot.room;
 
 var bot = new Bot(AUTH, USERID, ROOM);
 var mongoose = require('mongoose');
@@ -15,6 +16,16 @@ var Play = mongoose.model("Play", require("./models/play").Play);
 var twitter = require('./tweets').twitter;
 
 var currentSong;
+
+var airbrake;
+
+if(settings.airbrake && settings.airbrake.apikey){
+  airbrake = require('airbrake').createClient(settings.airbrake.apikey);
+}
+process.addListener('uncaughtException', function(err, stack){
+  console.log("Caught Exception: "+err+"\n"+err.stack);
+  if(airbrake){airbrake.notify(err);}
+});
 
 bot.on('newsong', function(data){
   setCurrentSong(data);

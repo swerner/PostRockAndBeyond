@@ -8,6 +8,7 @@
     "stylus":"0.19.3",
     "mongodb":"0.9.7-0",
     "jade":"0.17.0",
-    "twitter": "> 0.1"
+    "twitter": "> 0.1",
+    "airbrake":">=0.2.0"
   }
 }

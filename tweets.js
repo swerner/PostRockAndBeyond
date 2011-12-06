@@ -1,10 +1,11 @@
 var sys = require('sys');
 var twitter = require("twitter");
+var settings = require('./site_config.js');
 var twit = new twitter({
-  consumer_key: process.env.PRABTCONSKEY,
-  consumer_secret: process.env.PRABTCONSSEC,
-  access_token_key: process.env.PRABACCTOK,
-  access_token_secret: process.env.PRABACCTOKSEC
+  consumer_key: settings.twitter.consumerKey,
+  consumer_secret: settings.twitter.consumerSecret,
+  access_token_key: settings.twitter.accessToken,
+  access_token_secret: settings.twitter.accessTokenSecret
 });
 
 exports.twitter = twit;
