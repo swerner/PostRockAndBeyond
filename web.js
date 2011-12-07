@@ -6,7 +6,7 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 var app = express.createServer(express.logger());
 
-var bot = require('./bot').bot;
+var bot = require('./lib/bot').bot;
 
 mongoose.connect(settings.site.dburl);
 
