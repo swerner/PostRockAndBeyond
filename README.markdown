@@ -39,6 +39,5 @@ off of.
 * Fork the project.
 * Make your feature addition or bug fix.
 * Send me a pull request.
-* 
 
 This bot is not affiliated with or endorsed by Turntable.fm
