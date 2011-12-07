@@ -13,13 +13,16 @@ var Track = mongoose.model("Track", require("./models/track").Track);
 var Artist = mongoose.model("Artist", require("./models/artist").Artist);
 var Play = mongoose.model("Play", require("./models/play").Play);
 
-var twitter = require('./tweets').twitter;
+var twitter
+if(settings.twitter){
+  twitter = require('./tweets').twitter;
+}
 
 var currentSong;
 
 var airbrake;
 
-if(settings.airbrake && settings.airbrake.apikey){
+if(settings.airbrake){
   airbrake = require('airbrake').createClient(settings.airbrake.apikey);
 }
 process.addListener('uncaughtException', function(err, stack){
@@ -30,11 +33,11 @@ process.addListener('uncaughtException', function(err, stack){
 bot.on('newsong', function(data){
   setCurrentSong(data);
   show_link(data.room.metadata.current_song.metadata.artist);
-  tweet_song(data.room.metadata.current_song.metadata.artist);
+  if(twitter){tweet_song(data.room.metadata.current_song.metadata.artist);}
 });
 show_link = function(artist){
     var response = artist + ' Info: ';
-    response+="http://www.postrockandbeyond.com/artists/";
+    response+=settings.site.url+"/artists/";
     response+=escape(artist);
     bot.speak(response);
 };
@@ -71,7 +74,6 @@ bot.on('speak', function(data){
         if (result.length == 3 && result[2]){
           param = result[2].trim().toLowerCase();
         }
-
         switch(command){
           case 'sa':
           case 'setadmin':
@@ -81,7 +83,6 @@ bot.on('speak', function(data){
           case 'deladmin':
             deleteAdmin(param);
             break;
-
           case 'sb':
           case 'setbandcamp':
             setLink('bandcamp', param);
@@ -117,9 +118,6 @@ bot.on('speak', function(data){
           case 'sl':
             show_link(currentSong.artist.name);
             break;
-          case 'tweet':
-            tweet_song(currentSong.artist.name);
-            break;
         }
       }
     }
@@ -127,7 +125,7 @@ bot.on('speak', function(data){
 });
 
 tweet_song = function(artist){
-  var status = "Now playing #"+artist.toLowerCase().replace(/\ /gi,"")+" in http://turntable.fm/postrock_beyond"
+  var status = "Now playing #"+artist.toLowerCase().replace(/\ /gi,"")+" in "+settings.site.room_link
   twitter.verifyCredentials(function(){}).updateStatus(status, function(){});
 };
 

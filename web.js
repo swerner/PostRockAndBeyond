@@ -8,7 +8,7 @@ var app = express.createServer(express.logger());
 
 var bot = require('./bot').bot;
 
-mongoose.connect("mongodb://localhost/prab");
+mongoose.connect(settings.site.dburl);
 
 
 var Dj = mongoose.model("Dj", require("./models/dj").Dj);
@@ -29,6 +29,10 @@ process.addListener('uncaughtException', function(err, stack){
 app.configure(function(){
   app.set('views', __dirname+'/views');
   app.set('view engine', 'jade');
+  app.set('view options', {
+    siteTitle:settings.site.title,
+    siteLink:settings.site.room_link
+  });
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
@@ -81,7 +85,7 @@ app.get('/artists/:name', function(request, response){
         log_error(error, response);
         Track.find({artist: artist[0]._id}).limit(10).sort('upvotes', -1).run(function(error, tracks){
           response.render("artists/show.jade", { locals: {
-            title: "Post Rock And Beyond",
+            title: artist[0].name,
             artist: artist[0],
             artistName: artist[0].name,
             plays: plays,
@@ -100,7 +104,7 @@ app.get('/djs/:name', function(request, response){
     Play.find({dj: dj[0]._id}).sort('timestamp', -1).populate('track').limit(20).run(function(error, plays){
       log_error(error, response);
       response.render("djs/show.jade", { locals: {
-        title: "Post Rock And Beyond",
+        title: dj[0].name,
         dj: dj[0],
         plays: plays,
       }
