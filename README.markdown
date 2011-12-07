@@ -1,6 +1,8 @@
 #PRAB Bot 
 The code powering the bot in the turntable.fm room: Post-Rock & Beyond
-http://turntable.fm/postrock\_beyond
+http://turntable.fm/postrock_beyond
+
+Visit this bot running live at: http://postrockandbeyond.com
 
 ##Features
 
@@ -19,8 +21,8 @@ http://turntable.fm/postrock\_beyond
 ## Run your own
 To start running your own version of this bot you need:
 
-* Web server with node.js and mongodb installed
-* Create a site\_config.js file based off of site\_config.sample.js
+* Web server set up with node.js and mongodb
+* Create a site_config.js file based off of site_config.sample.js
   filling in your own values for the uncommented fields
 * Edit the About & Contact pages
 * Thats it!
