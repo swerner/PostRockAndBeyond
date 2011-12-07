@@ -79,6 +79,7 @@ app.get('/', function(request, response){
 app.get('/artists/:name', function(request, response){
   Artist.find({name: request.params.name}).run(function(error, artist){
     log_error(error, response);
+    if(artist.length == 0){notFound(request.params.name, response);return;}
     Play.find({artist: artist[0]._id}).sort('timestamp', -1).populate('dj').populate('track').limit(20).run(function(error, plays){
       log_error(error, response);
       Track.find({artist: artist[0]._id}).limit(10).sort('plays', -1).run(function(error, played){
@@ -140,6 +141,9 @@ app.get('/about', function(request, response){
 app.get('/contact', function(request, response){
   response.render('contact.jade', {locals: {title: "Contact"}});
 });
+notFound = function(item, response){
+  response.render("error.jade", {locals: {title: "Not Found", item: item}});
+}
 var port = settings.port || 3000;
 app.listen(port, function(){
   console.log("Listening on " + port);
