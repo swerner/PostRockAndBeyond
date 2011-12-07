@@ -79,7 +79,7 @@ app.get('/', function(request, response){
 app.get('/artists/:name', function(request, response){
   Artist.find({name: request.params.name}).run(function(error, artist){
     log_error(error, response);
-    if(artist.length == 0){notFound(request.params.name, response);return;}
+    if(artist.length === 0){notFound(request.params.name, response);return;}
     Play.find({artist: artist[0]._id}).sort('timestamp', -1).populate('dj').populate('track').limit(20).run(function(error, plays){
       log_error(error, response);
       Track.find({artist: artist[0]._id}).limit(10).sort('plays', -1).run(function(error, played){
@@ -101,7 +101,8 @@ app.get('/artists/:name', function(request, response){
 
 app.get('/djs/:name', function(request, response){
   Dj.find({name: request.params.name}, function(error, dj){
-    log_error(error, response)
+    log_error(error, response);
+    if(dj.length === 0){notFound(request.params.name, response);return;}
     Play.find({dj: dj[0]._id}).sort('timestamp', -1).populate('track').limit(20).run(function(error, plays){
       log_error(error, response);
       response.render("djs/show.jade", { locals: {
@@ -152,7 +153,7 @@ app.listen(port, function(){
 log_error = function(err, resp){
   if(err){
     console.log(err);
-    resp.render("error.jade");
+    resp.render("error.jade", {locals: {title: "Error", item: ""}});
   }
 };
 
