@@ -41,17 +41,17 @@ app.configure(function(){
 app.get('/', function(request, response){
       Play.find().sort('timestamp', -1).populate('dj').populate('artist').populate('track').limit(10).run(function(error, songs){
         log_error(error, response);
-        Artist.find().sort('plays', -1).limit(10).run(function(error, topArtists){
+        Artist.find().sort('plays', -1).limit(20).run(function(error, topArtists){
           log_error(error, response);
-          Artist.find().sort('upvotes', -1).limit(10).run(function(error, upvotedArtists){
+          Artist.find().sort('upvotes', -1).limit(20).run(function(error, upvotedArtists){
             log_error(error, response);
-            Track.find().sort('plays', -1).limit(10).run(function(error, topSongs){
+            Track.find().sort('plays', -1).limit(20).run(function(error, topSongs){
               log_error(error, response);
-              Track.find().sort('upvotes', -1).limit(10).run(function(error, upvotedSongs){
+              Track.find().sort('upvotes', -1).limit(20).run(function(error, upvotedSongs){
                 log_error(error, response);
-                Dj.find().sort('plays', -1).limit(10).run(function(error, topDjs){
+                Dj.find().sort('plays', -1).limit(20).run(function(error, topDjs){
                   log_error(error, response);
-                  Dj.find().sort('upvotes', -1).limit(10).run(function(error, upvotedDjs){
+                  Dj.find().sort('upvotes', -1).limit(20).run(function(error, upvotedDjs){
                     log_error(error, response);
                     response.render('index.jade', {
                       locals: {
