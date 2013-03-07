@@ -29,7 +29,7 @@ process.addListener('uncaughtException', function(err, stack){
 app.configure(function(){
   app.set('views', __dirname+'/views');
   app.set('view engine', 'jade');
-  app.set('view options', {
+  app.locals({
     siteTitle:settings.site.title,
     siteLink:settings.site.room_link
   });
@@ -38,6 +38,7 @@ app.configure(function(){
   app.use(app.router);
   app.use(express.static(__dirname +'/public'));
 });
+
 app.get('/', function(request, response){
       Play.find().sort('timestamp', -1).populate('dj').populate('artist').populate('track').limit(10).run(function(error, songs){
         log_error(error, response);
@@ -54,8 +55,8 @@ app.get('/', function(request, response){
                   Dj.find().sort('upvotes', -1).limit(20).run(function(error, upvotedDjs){
                     log_error(error, response);
                     response.render('index.jade', {
-			siteTitle: settings.site.title,
-			siteLink: settings.site.room_link,
+                        siteTitle: settings.site.title,
+                        siteLink: settings.site.room_link,
                         title: "Home",
                         currentTrack: songs[0],
                         songs: songs,
@@ -85,7 +86,7 @@ app.get('/artists/:name', function(request, response){
       Track.find({artist: artist[0]._id}).limit(10).sort('plays', -1).run(function(error, played){
         log_error(error, response);
         Track.find({artist: artist[0]._id}).limit(10).sort('upvotes', -1).run(function(error, tracks){
-          response.render("artists/show.jade", { 
+          response.render("artists/show.jade", {
             title: artist[0].name,
             artist: artist[0],
             artistName: artist[0].name,
@@ -105,7 +106,7 @@ app.get('/djs/:name', function(request, response){
     if(dj.length === 0){notFound(request.params.name, response);return;}
     Play.find({dj: dj[0]._id}).sort('timestamp', -1).populate('track').limit(20).run(function(error, plays){
       log_error(error, response);
-      response.render("djs/show.jade", { 
+      response.render("djs/show.jade", {
         title: dj[0].name,
         dj: dj[0],
         plays: plays,
@@ -116,7 +117,7 @@ app.get('/djs/:name', function(request, response){
 app.get('/artists', function(request, response){
   Artist.find().sort('name', 1).run(function(error, artists){
     log_error(error, response);
-    response.render('artists/index.jade', { 
+    response.render('artists/index.jade', {
       title: "Artists",
       artists: artists
     });
@@ -126,7 +127,7 @@ app.get('/artists', function(request, response){
 app.get('/djs', function(request, response){
   Dj.find().sort('name', 1).run(function(error, djs){
     log_error(error, response);
-    response.render('djs/index.jade',{ 
+    response.render('djs/index.jade',{
       title: "Djs",
       djs: djs
     });

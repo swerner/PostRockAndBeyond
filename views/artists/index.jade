@@ -1,6 +1,9 @@
-#index
-  h2= "Artists"
-  ul
-    each artist in artists
-      li
-        a(href="/artists/"+encodeURIComponent(artist.name).replace("!", "%21"))=artist.name
+extends ../layout
+
+block body
+  #index
+    h2= "Artists"
+    ul
+      each artist in artists
+        li
+          a(href="/artists/"+encodeURIComponent(artist.name).replace("!", "%21"))=artist.name

@@ -1,6 +1,9 @@
-#index
-  h2= "Djs"
-  ul
-    each dj in djs
-      li
-        a(href="/djs/"+dj.name)= dj.name+" - "+dj.upvotes
+extends ../layout
+
+block body
+  #index
+    h2= "Djs"
+    ul
+      each dj in djs
+        li
+          a(href="/djs/"+dj.name)= dj.name+" - "+dj.upvotes

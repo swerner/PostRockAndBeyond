@@ -1,17 +1,20 @@
-#djHead
-  h2= dj.name
-  div.plays= "Plays: "+dj.plays
-  div.awesomes= "Awesomes: "+dj.upvotes
-#leftBox
+extends ../layout
 
-#rightBox
-  #tracks
-    h2= "Last 20 Tracks Played"
-    ul
-      each play in plays
-        li.track
-          div.trackname= "Track: "+play.track.name
-          div.albumname= "Album: "+play.track.album
-          div.meta
-            div.time= "Played at "+new Date(play.timestamp*1000).toLocaleDateString()+" "
-            div.awesomes= "with "+play.upvotes+" awesomes"
+block body
+  #djHead
+    h2= dj.name
+    div.plays= "Plays: "+dj.plays
+    div.awesomes= "Awesomes: "+dj.upvotes
+  #leftBox
+
+  #rightBox
+    #tracks
+      h2= "Last 20 Tracks Played"
+      ul
+        each play in plays
+          li.track
+            div.trackname= "Track: "+play.track.name
+            div.albumname= "Album: "+play.track.album
+            div.meta
+              div.time= "Played at "+new Date(play.timestamp*1000).toLocaleDateString()+" "
+              div.awesomes= "with "+play.upvotes+" awesomes"

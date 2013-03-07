@@ -1,35 +1,38 @@
-#artistHead
-  h2= artist.name
-  div.plays= "Plays: "+artist.plays
-  div.awesomes= "Awesomes: "+artist.upvotes
-#leftBox
-  h2="Links:"
-  ul.links
-    if artist.links.website
-      li.link: a(href=artist.links.website)="Website"
-    if artist.links.bandcamp
-      li.link: a(href=artist.links.bandcamp)="Bandcamp"
-    if artist.links.facebook
-      li.link: a(href=artist.links.facebook)="Facebook"
-    if artist.links.lastfm
-      li.link: a(href=artist.links.lastfm)="Last.fm"
-  h2="Top Awesomed Tracks:"
-  ul.top-tracks
-    each track in topTracks
-      li= track.upvotes+" - "+track.name
-  h2="Top Played Tracks:"
-  ul.top-played
-    each track in topPlayed
-      li= track.plays+" - "+track.name
-#rightBox
-  #tracks
-    h2= "Last 20 Tracks Played"
-    ul
-      each play in plays
-        li.track
-          div.trackname= "Track: "+play.track.name
-          div.albumname= "Album: "+play.track.album
-          div.meta
-            div.dj= "Played by "+play.dj.name+" "
-            div.time= "at "+new Date(play.timestamp*1000).toLocaleDateString()+" "
-            div.awesomes= "with "+play.upvotes+" awesomes"
+extends ../layout
+
+block body
+  #artistHead
+    h2= artist.name
+    div.plays= "Plays: "+artist.plays
+    div.awesomes= "Awesomes: "+artist.upvotes
+  #leftBox
+    h2="Links:"
+    ul.links
+      if artist.links.website
+        li.link: a(href=artist.links.website)="Website"
+      if artist.links.bandcamp
+        li.link: a(href=artist.links.bandcamp)="Bandcamp"
+      if artist.links.facebook
+        li.link: a(href=artist.links.facebook)="Facebook"
+      if artist.links.lastfm
+        li.link: a(href=artist.links.lastfm)="Last.fm"
+    h2="Top Awesomed Tracks:"
+    ul.top-tracks
+      each track in topTracks
+        li= track.upvotes+" - "+track.name
+    h2="Top Played Tracks:"
+    ul.top-played
+      each track in topPlayed
+        li= track.plays+" - "+track.name
+  #rightBox
+    #tracks
+      h2= "Last 20 Tracks Played"
+      ul
+        each play in plays
+          li.track
+            div.trackname= "Track: "+play.track.name
+            div.albumname= "Album: "+play.track.album
+            div.meta
+              div.dj= "Played by "+play.dj.name+" "
+              div.time= "at "+new Date(play.timestamp*1000).toLocaleDateString()+" "
+              div.awesomes= "with "+play.upvotes+" awesomes"
