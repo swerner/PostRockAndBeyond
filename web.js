@@ -4,7 +4,7 @@ var settings = require('./site_config');
 var Bot = require('ttapi');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
-var app = express.createServer(express.logger());
+var app = express();
 
 var bot = require('./lib/bot').bot;
 
@@ -54,7 +54,8 @@ app.get('/', function(request, response){
                   Dj.find().sort('upvotes', -1).limit(20).run(function(error, upvotedDjs){
                     log_error(error, response);
                     response.render('index.jade', {
-                      locals: {
+			siteTitle: settings.site.title,
+			siteLink: settings.site.room_link,
                         title: "Home",
                         currentTrack: songs[0],
                         songs: songs,
@@ -64,7 +65,6 @@ app.get('/', function(request, response){
                         upvotedSongs: upvotedSongs,
                         topDjs: topDjs,
                         upvotedDjs: upvotedDjs
-                      }
                     });
                   });
                 });
@@ -85,14 +85,14 @@ app.get('/artists/:name', function(request, response){
       Track.find({artist: artist[0]._id}).limit(10).sort('plays', -1).run(function(error, played){
         log_error(error, response);
         Track.find({artist: artist[0]._id}).limit(10).sort('upvotes', -1).run(function(error, tracks){
-          response.render("artists/show.jade", { locals: {
+          response.render("artists/show.jade", { 
             title: artist[0].name,
             artist: artist[0],
             artistName: artist[0].name,
             plays: plays,
             topPlayed: played,
             topTracks: tracks
-          }});
+          });
         });
       });
     });
@@ -105,11 +105,10 @@ app.get('/djs/:name', function(request, response){
     if(dj.length === 0){notFound(request.params.name, response);return;}
     Play.find({dj: dj[0]._id}).sort('timestamp', -1).populate('track').limit(20).run(function(error, plays){
       log_error(error, response);
-      response.render("djs/show.jade", { locals: {
+      response.render("djs/show.jade", { 
         title: dj[0].name,
         dj: dj[0],
         plays: plays,
-      }
       });
     });
   });
@@ -117,10 +116,9 @@ app.get('/djs/:name', function(request, response){
 app.get('/artists', function(request, response){
   Artist.find().sort('name', 1).run(function(error, artists){
     log_error(error, response);
-    response.render('artists/index.jade', { locals: {
+    response.render('artists/index.jade', { 
       title: "Artists",
       artists: artists
-    }
     });
   });
 
@@ -128,22 +126,21 @@ app.get('/artists', function(request, response){
 app.get('/djs', function(request, response){
   Dj.find().sort('name', 1).run(function(error, djs){
     log_error(error, response);
-    response.render('djs/index.jade',{ locals: {
+    response.render('djs/index.jade',{ 
       title: "Djs",
       djs: djs
-    }
     });
   });
 });
 
 app.get('/about', function(request, response){
-  response.render('about.jade', {locals: {title: "About"}});
+  response.render('about.jade', {title: "About"});
 });
 app.get('/contact', function(request, response){
-  response.render('contact.jade', {locals: {title: "Contact"}});
+  response.render('contact.jade', {title: "Contact"});
 });
 notFound = function(item, response){
-  response.render("error.jade", {locals: {title: "Not Found", item: item}});
+  response.render("error.jade", {title: "Not Found", item: item});
 }
 var port = settings.port || 3000;
 app.listen(port, function(){
@@ -153,7 +150,7 @@ app.listen(port, function(){
 log_error = function(err, resp){
   if(err){
     console.log(err);
-    resp.render("error.jade", {locals: {title: "Error", item: ""}});
+    resp.render("error.jade", {title: "Error", item: ""});
   }
 };
 

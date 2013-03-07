@@ -3,3 +3,4 @@ config/
 config/**/*
 Capfile
 site_config.js
+tmp/

@@ -1,68 +1,70 @@
-div#current.group
-  h2= "Now Playing"
-  - if(currentTrack)
-    dl
-      dt.artist="Artist:"
-      dd.artist
-        a(href="/artists/"+encodeURIComponent(currentTrack.artist.name))= currentTrack.artist.name
-      dt.track="Track:"
-      dd.track=currentTrack.track.name
-      dt.album="Album:"
-      dd.album=currentTrack.track.album
-  - else
-    h2= "Nothing Currently Playing"
+extends ./layout    
 
-#homepageInfo
-  div#latest_tracks.group
-    h1= "Last 10 tracks played"
-    table
-      th= "Artist"
-      th= "Song Title"
-      th= "Dj"
-      th= "A"
-      th= "L"
-      th= "%"
-      each song, i in songs
-        tr
-          td
-            a(href="/artists/"+encodeURIComponent(song.artist.name))=song.artist.name
-          td= song.track.name
-          td= song.dj.name
-          td= song.upvotes||0
-          td= song.downvotes||0
-          td= parseInt((((song.upvotes/song.listeners)*0.5)-((song.downvotes/song.listeners)*0.5)+0.5)*100,10)+"%"
-  div#upvotedArtists.stats
-    h2= "Most Awesomed Artists"
-    ol
-      each artist in upvotedArtists
-        li= artist.upvotes+" - "
-          a(href="/artists/"+encodeURIComponent(artist.name))=artist.name
-  div#upvotedSongs.stats
-    h2= "Most Awesomed Songs"
-    ol
-      each song in upvotedSongs
-        li= song.upvotes+" - "+song.name
-  div#upvotedDjs.stats
-    h2= "Most Awesomed Djs"
-    ol
-      each dj in upvotedDjs
-        li= dj.upvotes+" - "
-          a(href="/djs/"+encodeURIComponent(dj.name))=dj.name
-  div#topArtists.stats
-    h2= "Most Played Artists"
-    ol
-      each artist in topArtists
-        li= artist.plays+" - "
-          a(href="/artists/"+encodeURIComponent(artist.name))=artist.name
-  div#topSongs.stats
-    h2= "Most Played Songs"
-    ol 
-      each song in topSongs
-        li= song.plays+" - "+song.name
-  div#topDjs.stats
-    h2= "Most Played Djs"
-    ol
-      each dj in topDjs
-        li= dj.plays+" - "
-          a(href="/djs/"+encodeURIComponent(dj.name))=dj.name
+block body
+  div#current.group
+    h2= "Now Playing"
+    - if(currentTrack)
+      dl
+        dt.artist="Artist:"
+        dd.artist
+      a(href="/artists/"+encodeURIComponent(currentTrack.artist.name))= currentTrack.artist.name
+        dt.track="Track:"
+        dd.track=currentTrack.track.name
+        dt.album="Album:"
+        dd.album=currentTrack.track.album
+    - else
+      h2= "Nothing Currently Playing"
 
+  #homepageInfo
+    div#latest_tracks.group
+      h1= "Last 10 tracks played"
+      table
+        th= "Artist"
+        th= "Song Title"
+        th= "Dj"
+        th= "A"
+        th= "L"
+        th= "%"
+        each song, i in songs
+          tr
+            td
+              a(href="/artists/"+encodeURIComponent(song.artist.name))=song.artist.name
+            td= song.track.name
+            td= song.dj.name
+            td= song.upvotes||0
+            td= song.downvotes||0
+            td= parseInt((((song.upvotes/song.listeners)*0.5)-((song.downvotes/song.listeners)*0.5)+0.5)*100,10)+"%"
+    div#upvotedArtists.stats
+      h2= "Most Awesomed Artists"
+      ol
+        each artist in upvotedArtists
+          li= artist.upvotes+" - "
+            a(href="/artists/"+encodeURIComponent(artist.name))=artist.name
+    div#upvotedSongs.stats
+      h2= "Most Awesomed Songs"
+      ol
+        each song in upvotedSongs
+          li= song.upvotes+" - "+song.name
+    div#upvotedDjs.stats
+      h2= "Most Awesomed Djs"
+      ol
+        each dj in upvotedDjs
+          li= dj.upvotes+" - "
+            a(href="/djs/"+encodeURIComponent(dj.name))=dj.name
+    div#topArtists.stats
+      h2= "Most Played Artists"
+      ol
+        each artist in topArtists
+          li= artist.plays+" - "
+            a(href="/artists/"+encodeURIComponent(artist.name))=artist.name
+    div#topSongs.stats
+      h2= "Most Played Songs"
+      ol 
+        each song in topSongs
+          li= song.plays+" - "+song.name
+    div#topDjs.stats
+      h2= "Most Played Djs"
+      ol
+        each dj in topDjs
+          li= dj.plays+" - "
+            a(href="/djs/"+encodeURIComponent(dj.name))=dj.name

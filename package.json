@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "dependencies": {
     "express": " > 2.2.0",
-    "ttapi":"1.0.1",
+    "ttapi":"1.5.0",
     "mongoose":"2.3.13",
     "stylus":"0.19.3",
     "mongodb":"0.9.7-0",
